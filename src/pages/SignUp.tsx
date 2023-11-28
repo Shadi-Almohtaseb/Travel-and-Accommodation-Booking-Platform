@@ -8,7 +8,7 @@ import { FaRegEyeSlash } from "react-icons/fa";
 import { Image } from "@nextui-org/react";
 import { Link } from "@nextui-org/react";
 
-const Login = () => {
+const SignUp = () => {
   const [userDetails, setUserDetails] = useState({
     email: "",
     password: "",
@@ -21,7 +21,7 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // try {
-    //   const res = await dispatch(login(userDetails)).unwrap();
+    //   const res = await dispatch(signUp(userDetails)).unwrap();
     //   toast.success(res.message);
     //   router.push("/");
     // } catch (error: any) {
@@ -35,7 +35,7 @@ const Login = () => {
         <Image src={LogoImage} alt="Logo" className="w-[120px]" />
       </div>
       <div className="sm:mx-auto sm:w-full sm:max-w-md flex justify-center items-center gap-5 mt-14">
-        <h2 className="text-center text-4xl font-extrabold">Login</h2>
+        <h2 className="text-center text-4xl font-extrabold">Sign up</h2>
         <img
           width="55"
           height="55"
@@ -110,16 +110,16 @@ const Login = () => {
                   false ? "bg-gray-500" : "bg-blue-600 hover:bg-blue-700"
                 }`}
               >
-                {false ? "Loading..." : "Login"}
+                {false ? "Loading..." : "Sign up"}
               </button>
               {/* {error && (
                 <p className="mt-2 text-sm text-red-600 text-center">{error}</p>
               )} */}
             </div>
             <div>
-              <h4>Don't have an account?</h4>
-              <Link href="/sign-up" className="text-blue-600">
-                Sign up
+              <h4>already have an account?</h4>
+              <Link href="/login" className="text-blue-600">
+                Login
               </Link>
             </div>
           </form>
@@ -129,4 +129,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
