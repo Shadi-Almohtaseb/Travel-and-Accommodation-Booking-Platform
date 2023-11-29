@@ -1,32 +1,35 @@
 import React, { useState } from "react";
 import LogoImage from "../assets/images/image-removebg-preview (3).png";
-// import { toast } from "react-toastify";
-// import { useDispatch, useSelector } from "react-redux";
-// import { AppDispatch, RootState } from "@/redux/store";
+import { toast } from "react-toastify";
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { Image } from "@nextui-org/react";
 import { Link } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
+import { loginUser } from "../redux/thunks/userThunk";
 
 const Login = () => {
   const [userDetails, setUserDetails] = useState({
-    email: "",
+    userName: "",
     password: "",
   });
   const [visible, setVisible] = useState(false);
-  //   const router = useRouter();
-  //   const { error, loading } = useSelector((state: RootState) => state.authUser);
-  //   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const { error, loading } = useSelector((state: RootState) => state.authUser);
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // try {
-    //   const res = await dispatch(login(userDetails)).unwrap();
-    //   toast.success(res.message);
-    //   router.push("/");
-    // } catch (error: any) {
-    //   toast.error(error);
-    // }
+    try {
+      const res = await dispatch(loginUser(userDetails)).unwrap();
+      console.log("res", res);
+      toast.success(res.message);
+      // navigate("/");
+    } catch (error: any) {
+      toast.error(error);
+    }
   };
 
   return (
@@ -48,20 +51,20 @@ const Login = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
-                htmlFor="email"
+                htmlFor="userName"
                 className="block text-sm font-medium text-gray-700"
               >
-                Email address
+                User name
               </label>
               <div className="mt-1">
                 <input
-                  type="email"
-                  name="email"
-                  autoComplete="email"
+                  type="userName"
+                  name="userName"
+                  autoComplete="userName"
                   required
-                  value={userDetails?.email}
+                  value={userDetails?.userName}
                   onChange={(e) =>
-                    setUserDetails({ ...userDetails, email: e.target.value })
+                    setUserDetails({ ...userDetails, userName: e.target.value })
                   }
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
@@ -105,16 +108,16 @@ const Login = () => {
             <div>
               <button
                 type="submit"
-                // disabled={loading}
+                disabled={loading}
                 className={`group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
-                  false ? "bg-gray-500" : "bg-blue-600 hover:bg-blue-700"
+                  loading ? "bg-gray-500" : "bg-blue-600 hover:bg-blue-700"
                 }`}
               >
-                {false ? "Loading..." : "Login"}
+                {loading ? "Loading..." : "Login"}
               </button>
-              {/* {error && (
+              {error && (
                 <p className="mt-2 text-sm text-red-600 text-center">{error}</p>
-              )} */}
+              )}
             </div>
             <div>
               <h4>Don't have an account?</h4>
