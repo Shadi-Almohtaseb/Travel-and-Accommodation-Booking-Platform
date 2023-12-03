@@ -13,7 +13,7 @@ function App() {
   const { user } = useSelector((state: RootState) => state.authUser);
   return (
     <BrowserRouter>
-      {user && <Navbar />}
+      {!user && <Navbar />}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -16,7 +16,6 @@ import { useThemeSettings } from "../hooks/useThemeSettings";
 import ThemeToggle from "./ToggleTheme";
 import LogoImage from "../assets/images/image-removebg-preview (3).png";
 import { Image } from "@nextui-org/react";
-
 const styles = {
   label: "text-black/50 dark:text-white/90",
   input: [
@@ -53,10 +52,14 @@ const menuItems = [
 ];
 
 export default function App() {
-  const { currentMode, iconColor, toggleTheme } = useThemeSettings();
+  const { currentMode, toggleTheme } = useThemeSettings();
 
   return (
-    <Navbar disableAnimation maxWidth="full" className="bg-[#20243f] py-2">
+    <Navbar
+      disableAnimation
+      maxWidth="full"
+      className="bg-transparent dark:bg-transparent shadow-none fixed py-1"
+    >
       <NavbarContent className="sm:hidden text-white" justify="start">
         <NavbarMenuToggle />
       </NavbarContent>
@@ -66,22 +69,34 @@ export default function App() {
       <div className="flex items-center justify-center lg:w-[60%] gap-8">
         <NavbarContent justify="start" className="hidden md:flex gap-8">
           <NavbarItem isActive>
-            <Link className="text-white font-semibold" href="#">
+            <Link
+              className="dark:text-white text-slate-900 text-lg font-semibold"
+              href="#"
+            >
               Home
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link className="text-white font-semibold" href="#">
+            <Link
+              className="dark:text-white text-slate-900 text-lg font-semibold"
+              href="#"
+            >
               Rooms
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link className="text-white font-semibold" href="#">
+            <Link
+              className="dark:text-white text-slate-900 text-lg font-semibold"
+              href="#"
+            >
               Features
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link className="text-white font-semibold" href="#">
+            <Link
+              className="dark:text-white text-slate-900 text-lg font-semibold"
+              href="#"
+            >
               Hotels
             </Link>
           </NavbarItem>
@@ -103,16 +118,26 @@ export default function App() {
       <NavbarContent justify="end">
         <ThemeToggle currentMode={currentMode} toggleTheme={toggleTheme} />
         <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
+          <Link
+            href="#"
+            className="text-slate-900 dark:text-white text-xl font-semibold"
+          >
+            Login
+          </Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
+          <Button
+            as={Link}
+            href="#"
+            variant="flat"
+            className="text-slate-900 dark:text-white text-xl font-semibold"
+          >
             Sign Up
           </Button>
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarMenu className="bg-[#20243f] h-fit py-4 rounded-xl gap-5">
+      <NavbarMenu className="bg-[#20243f] h-fit py-4 rounded-b-xl gap-5 mt-4 shadow-2xl">
         <NavbarContent className="sm:hidden flex">
           <Input
             label="Search"
