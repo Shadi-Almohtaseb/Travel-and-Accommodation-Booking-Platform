@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 
 const useThemeSettings = () => {
-  const [currentMode, setCurrentMode] = useState(
+  const [currentMode, setCurrentMode] = useState<string>(
     localStorage.getItem("theme") || "Light"
   );
 
   const toggleTheme = () => {
     const newTheme = currentMode === "Light" ? "Dark" : "Light";
     localStorage.setItem("theme", newTheme);
+    window.dispatchEvent(new Event("themeChange"));
     setCurrentMode(newTheme);
   };
 

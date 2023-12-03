@@ -1,7 +1,15 @@
 import React from "react";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 
-const ThemeToggle = ({ currentMode, toggleTheme }: any) => {
+interface ThemeToggleProps {
+  currentMode: string;
+  toggleTheme: () => void;
+}
+
+const ThemeToggle: React.FC<ThemeToggleProps> = ({
+  currentMode,
+  toggleTheme,
+}) => {
   return (
     <button
       onClick={toggleTheme}

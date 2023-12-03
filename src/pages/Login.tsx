@@ -17,7 +17,9 @@ const Login = () => {
   });
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
-  const { error, loading } = useSelector((state: RootState) => state.authUser);
+  const { isError, loading } = useSelector(
+    (state: RootState) => state.authUser
+  );
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -115,8 +117,10 @@ const Login = () => {
               >
                 {loading ? "Loading..." : "Login"}
               </button>
-              {error && (
-                <p className="mt-2 text-sm text-red-600 text-center">{error}</p>
+              {isError && (
+                <p className="mt-2 text-sm text-red-600 text-center">
+                  {isError}
+                </p>
               )}
             </div>
             <div>
