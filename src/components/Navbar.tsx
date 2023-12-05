@@ -58,7 +58,7 @@ export default function App() {
     <Navbar
       disableAnimation
       maxWidth="full"
-      className="bg-transparent dark:bg-transparent shadow-none fixed py-1"
+      className="bg-transparent dark:bg-transparent shadow-none fixed py-1 z-50"
     >
       <NavbarContent className="sm:hidden text-white" justify="start">
         <NavbarMenuToggle />
@@ -70,7 +70,7 @@ export default function App() {
         <NavbarContent justify="start" className="hidden md:flex gap-8">
           <NavbarItem isActive>
             <Link
-              className="dark:text-white text-slate-900 text-lg font-semibold"
+              className="text-black dark:text-white text-lg font-semibold"
               href="#"
             >
               Home
@@ -78,7 +78,7 @@ export default function App() {
           </NavbarItem>
           <NavbarItem>
             <Link
-              className="dark:text-white text-slate-900 text-lg font-semibold"
+              className="text-black dark:text-white text-lg font-semibold"
               href="#"
             >
               Rooms
@@ -86,7 +86,7 @@ export default function App() {
           </NavbarItem>
           <NavbarItem>
             <Link
-              className="dark:text-white text-slate-900 text-lg font-semibold"
+              className="text-black dark:text-white text-lg font-semibold"
               href="#"
             >
               Features
@@ -94,7 +94,7 @@ export default function App() {
           </NavbarItem>
           <NavbarItem>
             <Link
-              className="dark:text-white text-slate-900 text-lg font-semibold"
+              className="text-black dark:text-white text-lg font-semibold"
               href="#"
             >
               Hotels
@@ -120,7 +120,7 @@ export default function App() {
         <NavbarItem className="hidden lg:flex">
           <Link
             href="#"
-            className="text-slate-900 dark:text-white text-xl font-semibold"
+            className="text-black dark:text-white text-xl font-semibold"
           >
             Login
           </Link>
@@ -130,7 +130,7 @@ export default function App() {
             as={Link}
             href="#"
             variant="flat"
-            className="text-slate-900 dark:text-white text-xl font-semibold"
+            className="text-black dark:text-white text-xl font-semibold"
           >
             Sign Up
           </Button>

@@ -4,4 +4,5 @@ export const userApiUrls = {
     getUserRoute: (userId: string) => `${API_BASE_URL}/users/${userId}`,
     signupUserRoute: `${API_BASE_URL}/auth/signup`,
     loginUserRoute: `${API_BASE_URL}/auth/login`,
+    featuredHotelsRoute: `${API_BASE_URL}/home/featured-deals`
 };
