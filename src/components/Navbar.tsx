@@ -52,10 +52,6 @@ const menuItems = [
   "Activity",
   "Analytics",
   "System",
-  "Deployments",
-  "My Settings",
-  "Team Settings",
-  "Help & Feedback",
   "Log Out",
 ];
 
@@ -76,7 +72,7 @@ export default function App() {
       maxWidth="full"
       className="bg-transparent dark:bg-transparent shadow-none fixed py-1 z-50"
     >
-      <NavbarContent className="sm:hidden text-white" justify="start">
+      <NavbarContent className="sm:hidden text-black" justify="start">
         <NavbarMenuToggle />
       </NavbarContent>
       <Link href="/" className="hidden sm:flex cursor-pointer">
@@ -195,7 +191,7 @@ export default function App() {
         )}
       </NavbarContent>
 
-      <NavbarMenu className="bg-[#20243f] h-fit py-4 rounded-b-xl gap-5 mt-4 shadow-2xl">
+      <NavbarMenu className="bg-[#20243f] h-fit py-4 rounded-b-xl gap-5 mt-4 shadow-2xl z-50">
         <NavbarContent className="sm:hidden flex">
           <Input
             label="Search"
