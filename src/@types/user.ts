@@ -1,16 +1,16 @@
 export type UserAuth = {
     id?: string;
-    userName: string;
+    username: string;
     password: string;
     createdAt?: string;
 }
 
 export type UserLogin = {
-    userName: string;
+    username: string;
     password: string;
 }
 
 export type OTPUser = {
-    userName: string;
+    username: string;
     otp: string;
 }

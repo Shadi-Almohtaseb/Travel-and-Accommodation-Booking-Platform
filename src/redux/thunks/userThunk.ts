@@ -54,20 +54,31 @@ export const loginUser = createAsyncThunk('login-User', async (payload: UserLogi
       body: JSON.stringify(payload)
     });
 
+
     if (response.ok) {
       const data = await response.json();
       localStorage.setItem("User", JSON.stringify(data));
-      localStorage.setItem("token", JSON.stringify(data.token));
       return data;
     } else {
-      const errorData = await response.json();
-      const errorMessage = errorData.error || 'An error occurred';
-      throw errorMessage
+      const errorStatus = response.status;
+
+      try {
+        const errorData = await response.json();
+        const errorMessage = errorData.error || 'An error occurred';
+        throw errorMessage;
+      } catch (jsonError) {
+        if (errorStatus === 401) {
+          throw 'Invalid email or password';
+        } else {
+          const errorText = await response.text();
+          throw errorText || 'An error occurred';
+        }
+      }
     }
-  } catch (error) {
+  } catch (error: any) {
     return rejectWithValue(error);
   }
-})
+});
 
 export const logoutUser = createAsyncThunk('logout-User', async (UserId: string, { rejectWithValue }) => {
   try {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LogoImage from "../assets/images/image-removebg-preview (3).png";
 import { toast } from "react-toastify";
 import { IoEyeOutline } from "react-icons/io5";
@@ -12,23 +12,27 @@ import { loginUser } from "../redux/thunks/userThunk";
 
 const Login = () => {
   const [userDetails, setUserDetails] = useState({
-    userName: "",
+    username: "",
     password: "",
   });
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
-  const { isError, loading } = useSelector(
-    (state: RootState) => state.authUser
-  );
+  const { User, loading } = useSelector((state: RootState) => state.authUser);
   const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    if (User) {
+      navigate("/");
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const res = await dispatch(loginUser(userDetails)).unwrap();
       console.log("res", res);
-      toast.success(res.message);
-      // navigate("/");
+      toast.success("Login successful");
+      navigate("/");
     } catch (error: any) {
       toast.error(error);
     }
@@ -60,13 +64,13 @@ const Login = () => {
               </label>
               <div className="mt-1">
                 <input
-                  type="userName"
+                  type="text"
                   name="userName"
                   autoComplete="userName"
                   required
-                  value={userDetails?.userName}
+                  value={userDetails?.username}
                   onChange={(e) =>
-                    setUserDetails({ ...userDetails, userName: e.target.value })
+                    setUserDetails({ ...userDetails, username: e.target.value })
                   }
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
@@ -117,11 +121,6 @@ const Login = () => {
               >
                 {loading ? "Loading..." : "Login"}
               </button>
-              {isError && (
-                <p className="mt-2 text-sm text-red-600 text-center">
-                  {isError}
-                </p>
-              )}
             </div>
             <div>
               <h4>Don't have an account?</h4>

@@ -4,16 +4,11 @@ import { Button, Image, Input, Link } from "@nextui-org/react";
 import backgroundImageLight from "../assets/images/wallpaperflare.com_wallpaper (2).jpg";
 import backgroundImageDark from "../assets/images/wallpaperflare.com_wallpaper (3).jpg";
 import { motion } from "framer-motion";
-import { GrLocation } from "react-icons/gr";
-import { FaRegCalendarAlt } from "react-icons/fa";
-import { MdFamilyRestroom } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { featuredHotels } from "../redux/thunks/homeThunk";
 import { toast } from "react-toastify";
 import { RootState } from "../redux/store";
-import Card from "../components/Card";
-import { Hotel } from "../@types/hotel";
-import Loading from "../components/Loading";
+import GettingStarted from "../components/GettingStarted";
 
 const Home = () => {
   const [backgroundImage, setBackgroundImage] = useState(backgroundImageLight);
@@ -34,9 +29,7 @@ const Home = () => {
   }, []);
 
   const dispatch = useDispatch();
-  const { hotels, isError, loading } = useSelector(
-    (state: RootState) => state.home
-  );
+  const { hotels, loading } = useSelector((state: RootState) => state.home);
 
   useEffect(() => {
     try {
@@ -63,7 +56,7 @@ const Home = () => {
             <motion.div
               initial={{ opacity: 0, x: 120 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 1, delay: 0.5 }}
             >
               <span className="lg:text-[6rem] md:text-[4rem] text-[3rem] leading-tight">
                 Plan Your <br /> Perfect Getaway
@@ -72,7 +65,7 @@ const Home = () => {
             <motion.div
               initial={{ opacity: 0, x: -120 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 1, delay: 0.5 }}
             >
               <p className="mt-10 lg:text-[1.4rem] text-[1rem]">
                 Explore our travel platform to discover amazing destinations
@@ -87,7 +80,7 @@ const Home = () => {
             <motion.div
               initial={{ opacity: 0, y: 120 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 1, delay: 0.5 }}
             >
               <Link href="#getting-started">
                 <Button
@@ -103,40 +96,7 @@ const Home = () => {
           </div>
         </article>
       </main>
-      <section id="getting-started" className="min-h-screen h-full py-5">
-        <motion.div
-          initial={{ opacity: 0, y: 120 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          <div className="flex items-center gap-14 lg:mx-16 rounded-lg bg-slate-100 shadow-2xl dark:bg-slate-800 py-7 px-5 mt-16">
-            <div className="flex items-center gap-3 w-full">
-              <GrLocation size={35} />
-              <Input type="text" label="Location" className="shadow-lg" />
-            </div>
-            <div className="flex items-center gap-3 w-full">
-              <FaRegCalendarAlt size={27} />
-              <Input type="date" className="shadow-lg" />
-            </div>
-            <div className="flex items-center gap-3 w-full">
-              <MdFamilyRestroom size={35} />
-              <ChildrenModal />
-            </div>
-          </div>
-        </motion.div>
-        <div className="lg:mx-10 mx-3 mt-14">
-          <span className="text-3xl">Featured Deals</span>
-          {loading ? (
-            <Loading />
-          ) : (
-            <div className="flex justify-center flex-wrap gap-10">
-              {hotels?.map((hotel: Hotel, index: number) => {
-                return <Card key={index} hotel={hotel} />;
-              })}
-            </div>
-          )}
-        </div>
-      </section>
+      <GettingStarted hotels={hotels} loading={loading} />
     </div>
   );
 };

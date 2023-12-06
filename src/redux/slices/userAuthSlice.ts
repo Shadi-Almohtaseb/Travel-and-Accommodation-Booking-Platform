@@ -1,13 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { loginUser, logoutUser, signupUser } from '../thunks/userThunk';
 
-let User = JSON.parse(localStorage.getItem("User") || "{}");
-let storedToken = localStorage.getItem("token");
-let token = storedToken ? JSON.parse(storedToken) : null;
+let User = localStorage.getItem("User") ? JSON.parse(localStorage.getItem("User") as string) : null;
 
 const initialState = {
-  User: User ? User : {},
-  token: token ? token : null,
+  User: User ? User : null,
   isError: false,
   loading: false,
 } as any;
@@ -24,8 +21,7 @@ const authUserSlice = createSlice({
   extraReducers: (builder) => {
     // Reducers for signupUser action
     builder.addCase(signupUser.fulfilled, (state, action) => {
-      state.User = action.payload.User
-      state.token = action.payload.token;
+      state.User = action.payload
       state.loading = false;
       state.isError = false
     });
@@ -40,8 +36,7 @@ const authUserSlice = createSlice({
 
     // Reducers for loginUser action
     builder.addCase(loginUser.fulfilled, (state, action) => {
-      state.User = action.payload.User
-      state.token = action.payload.token;
+      state.User = action.payload
       state.loading = false;
       state.isError = false
     });
