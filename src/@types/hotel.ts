@@ -16,3 +16,10 @@ export type trendingHotel = {
     thumbnailUrl: string;
     description: string;
 };
+
+export type recentlyVisitedHotel = {
+    cityName: string,
+    hotelName: string
+    starRating: number
+    thumbnailUrl: string
+};

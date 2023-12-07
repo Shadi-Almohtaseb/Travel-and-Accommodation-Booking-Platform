@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   featuredHotels as featuredHotelsFun,
   trendingHotels as trendingHotelsFun,
+  recentlyVisitedHotels as RecentlyVisitedHotelsFun,
 } from "../redux/thunks/homeThunk";
 import { toast } from "react-toastify";
 import { RootState } from "../redux/store";
@@ -31,20 +32,22 @@ const Home = () => {
   }, []);
 
   const dispatch = useDispatch();
-  const { featuredHotels, trendingHotels, loading } = useSelector(
-    (state: RootState) => state.home
-  );
+  const { featuredHotels, trendingHotels, hotelsRecentlyVisited, loading } =
+    useSelector((state: RootState) => state.home);
 
   useEffect(() => {
-    const fetchData = async (fetchFunction: any) => {
+    const fetchData = async (fetchFunction: any, ...args: any[]) => {
       try {
-        await dispatch(fetchFunction() as any);
+        await dispatch(fetchFunction(...args) as any);
       } catch (error: any) {
         toast.error(error.message || "An error occurred");
       }
     };
 
+    const userId = Math.floor(Math.random() * 100) + 1; // Generate a consistent userId or get it from your authentication system
+
     fetchData(featuredHotelsFun);
+    fetchData(RecentlyVisitedHotelsFun, userId);
     fetchData(trendingHotelsFun);
   }, [dispatch]);
 
@@ -108,6 +111,7 @@ const Home = () => {
       <GettingStarted
         featuredHotels={featuredHotels}
         trendingHotels={trendingHotels}
+        hotelsRecentlyVisited={hotelsRecentlyVisited}
         loading={loading}
       />
     </div>
