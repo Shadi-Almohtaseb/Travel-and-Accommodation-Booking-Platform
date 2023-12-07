@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import ChildrenModal from "../components/modals/ChildrenModal";
-import { Button, Image, Input, Link } from "@nextui-org/react";
+import { Button, Image, Link } from "@nextui-org/react";
 import backgroundImageLight from "../assets/images/wallpaperflare.com_wallpaper (2).jpg";
 import backgroundImageDark from "../assets/images/wallpaperflare.com_wallpaper (3).jpg";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import { featuredHotels } from "../redux/thunks/homeThunk";
+import {
+  featuredHotels as featuredHotelsFun,
+  trendingHotels as trendingHotelsFun,
+} from "../redux/thunks/homeThunk";
 import { toast } from "react-toastify";
 import { RootState } from "../redux/store";
 import GettingStarted from "../components/GettingStarted";
@@ -29,14 +31,21 @@ const Home = () => {
   }, []);
 
   const dispatch = useDispatch();
-  const { hotels, loading } = useSelector((state: RootState) => state.home);
+  const { featuredHotels, trendingHotels, loading } = useSelector(
+    (state: RootState) => state.home
+  );
 
   useEffect(() => {
-    try {
-      dispatch(featuredHotels() as any);
-    } catch (error: any) {
-      toast.error(error);
-    }
+    const fetchData = async (fetchFunction: any) => {
+      try {
+        await dispatch(fetchFunction() as any);
+      } catch (error: any) {
+        toast.error(error.message || "An error occurred");
+      }
+    };
+
+    fetchData(featuredHotelsFun);
+    fetchData(trendingHotelsFun);
   }, [dispatch]);
 
   return (
@@ -96,7 +105,11 @@ const Home = () => {
           </div>
         </article>
       </main>
-      <GettingStarted hotels={hotels} loading={loading} />
+      <GettingStarted
+        featuredHotels={featuredHotels}
+        trendingHotels={trendingHotels}
+        loading={loading}
+      />
     </div>
   );
 };

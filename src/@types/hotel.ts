@@ -9,3 +9,10 @@ export type Hotel = {
     description: string;
     discountPercentage: number;
 };
+
+export type trendingHotel = {
+    countryName: string;
+    cityName: string;
+    thumbnailUrl: string;
+    description: string;
+};

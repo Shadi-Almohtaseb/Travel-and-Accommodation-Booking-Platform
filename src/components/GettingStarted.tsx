@@ -1,19 +1,21 @@
 import React from "react";
+import "react-multi-carousel/lib/styles.css";
 import ChildrenModal from "../components/modals/ChildrenModal";
 import { Input } from "@nextui-org/react";
 import { motion } from "framer-motion";
 import { GrLocation } from "react-icons/gr";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { MdFamilyRestroom } from "react-icons/md";
-import Card from "../components/Card";
-import { Hotel } from "../@types/hotel";
+import { Hotel, trendingHotel } from "../@types/hotel";
 import Loading from "../components/Loading";
 import useAnimationInView from "../hooks/useAnimationInView";
 import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
+import FeaturedCard from "./FeaturedCard";
+import TrendingCard from "./TrendingCard";
 
 interface gettingStartedProps {
-  hotels: Hotel[];
+  featuredHotels: Hotel[];
+  trendingHotels: trendingHotel[];
   loading: boolean;
 }
 
@@ -40,7 +42,11 @@ const responsive = {
   },
 };
 
-const GettingStarted = ({ hotels, loading }: gettingStartedProps) => {
+const GettingStarted = ({
+  featuredHotels,
+  trendingHotels,
+  loading,
+}: gettingStartedProps) => {
   const { controls, ref } = useAnimationInView();
 
   return (
@@ -86,12 +92,44 @@ const GettingStarted = ({ hotels, loading }: gettingStartedProps) => {
               containerClass="carousel-container"
               removeArrowOnDeviceType={["tablet", "mobile"]}
               dotListClass="custom-dot-list-style"
-              itemClass="carousel-item-padding-40-px flex justify-center"
-              // className="flex justify-center bg-red-400"
+              itemClass="carousel-item-padding-40-px flex justify-center pb-12"
             >
-              {hotels?.map((hotel: Hotel, index: number) => {
-                return <Card key={index} hotel={hotel} />;
-              })}
+              {featuredHotels && featuredHotels.length > 0 ? (
+                featuredHotels.map((hotel: Hotel) => (
+                  <FeaturedCard key={hotel.title} hotel={hotel} />
+                ))
+              ) : (
+                <p>No trending hotels available.</p>
+              )}
+            </Carousel>
+          </div>
+        )}
+      </div>
+      <div className="lg:mx-10 mx-3">
+        <span className="text-3xl">Trending Destination</span>
+        {loading ? (
+          <Loading />
+        ) : (
+          <div>
+            <Carousel
+              showDots={true}
+              responsive={responsive}
+              infinite={true}
+              autoPlaySpeed={1000}
+              keyBoardControl={true}
+              transitionDuration={500}
+              containerClass="carousel-container"
+              removeArrowOnDeviceType={["tablet", "mobile"]}
+              dotListClass="custom-dot-list-style"
+              itemClass="carousel-item-padding-40-px flex justify-center pb-12"
+            >
+              {trendingHotels && trendingHotels.length > 0 ? (
+                trendingHotels.map((hotel: trendingHotel) => (
+                  <TrendingCard key={hotel.cityName} hotel={hotel} />
+                ))
+              ) : (
+                <p>No trending hotels available.</p>
+              )}
             </Carousel>
           </div>
         )}
