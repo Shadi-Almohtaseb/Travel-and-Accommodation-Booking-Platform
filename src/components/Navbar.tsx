@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Navbar,
   User as UserComponent,
@@ -20,31 +20,12 @@ import { useThemeSettings } from "../hooks/useThemeSettings";
 import ThemeToggle from "./ToggleTheme";
 import LogoImage from "../assets/images/image-removebg-preview (3).png";
 import { Image } from "@nextui-org/react";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
 import { CgLogOut, CgProfile } from "react-icons/cg";
-
-const styles = {
-  label: "text-black/50 dark:text-white/90",
-  input: [
-    "bg-transparent",
-    "text-black/90 dark:text-white/90",
-    "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-  ],
-  innerWrapper: "bg-transparent",
-  inputWrapper: [
-    "shadow-xl",
-    "bg-default-100",
-    "dark:bg-default/60",
-    "backdrop-blur-xl",
-    "backdrop-saturate-200",
-    "hover:bg-default-200/70",
-    "focus-within:!bg-default-200",
-    "dark:hover:bg-default/70",
-    "dark:focus-within:!bg-default/60",
-    "!cursor-text",
-  ],
-};
+import { styles } from "../assets/styles/navStyle";
+import { toast } from "react-toastify";
+import { searchForHotels } from "../redux/thunks/homeThunk";
 
 const menuItems = [
   "Profile",
@@ -58,13 +39,25 @@ const menuItems = [
 export default function App() {
   const { currentMode, toggleTheme } = useThemeSettings();
   const { User } = useSelector((state: RootState) => state.authUser);
-
-  console.log(User);
+  const [searchParam, setSearchParam] = useState("");
 
   const handleLogout = () => {
     localStorage.removeItem("User");
     window.location.reload();
   };
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { searchHotels } = useSelector((state: RootState) => state.home);
+
+  useEffect(() => {
+    try {
+      dispatch(searchForHotels(searchParam));
+      console.log("searchHotels", searchHotels);
+    } catch (error) {
+      console.log(error);
+      toast.error("cant search, Something went wrong");
+    }
+  }, [searchParam, dispatch]);
 
   return (
     <Navbar
@@ -78,55 +71,77 @@ export default function App() {
       <Link href="/" className="hidden sm:flex cursor-pointer">
         <Image src={LogoImage} alt="Logo" className="w-[100px] lg:p-4 p-5" />
       </Link>
-      <div className="flex items-center justify-center lg:w-[60%] gap-8">
-        <NavbarContent justify="start" className="hidden md:flex gap-8">
-          <NavbarItem isActive>
-            <Link
-              className="text-black dark:text-white text-lg font-semibold"
-              href="#"
-            >
-              Home
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link
-              className="text-black dark:text-white text-lg font-semibold"
-              href="#"
-            >
-              Rooms
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link
-              className="text-black dark:text-white text-lg font-semibold"
-              href="#"
-            >
-              Features
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link
-              className="text-black dark:text-white text-lg font-semibold"
-              href="#"
-            >
-              Hotels
-            </Link>
-          </NavbarItem>
-        </NavbarContent>
+      {User && (
+        <div className="flex items-center justify-center lg:w-[60%] gap-8">
+          <NavbarContent justify="start" className="hidden md:flex gap-8">
+            <NavbarItem isActive>
+              <Link
+                className="text-black dark:text-white text-lg font-semibold"
+                href="#"
+              >
+                Home
+              </Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Link
+                className="text-black dark:text-white text-lg font-semibold"
+                href="#"
+              >
+                Rooms
+              </Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Link
+                className="text-black dark:text-white text-lg font-semibold"
+                href="#"
+              >
+                Features
+              </Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Link
+                className="text-black dark:text-white text-lg font-semibold"
+                href="#"
+              >
+                Hotels
+              </Link>
+            </NavbarItem>
+          </NavbarContent>
 
-        <NavbarContent className="hidden sm:flex">
-          <Input
-            label="Search"
-            isClearable
-            radius="lg"
-            classNames={styles}
-            placeholder="Type to search..."
-            startContent={
-              <FaSearch className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
-            }
-          />
-        </NavbarContent>
-      </div>
+          <NavbarContent className="hidden sm:flex flex-col">
+            <Input
+              label="Search"
+              isClearable
+              radius="lg"
+              classNames={styles}
+              value={searchParam}
+              onChange={(e) => setSearchParam(e.target.value)}
+              onClear={() => setSearchParam("")}
+              placeholder="Search for hotels, cities..."
+              startContent={
+                <FaSearch className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+              }
+            />
+            {/* {searchHotels && searchHotels.length > 0 && (
+            <div className="absolute top-16 bg-default-100 p-2 rounded-xl">
+              {searchHotels.map((hotel: any) => (
+                <article
+                  key={hotel.description}
+                  className="flex items-center mb-1 gap-2 bg-default-200 hover:bg-default-50 rounded-xl py-2 px-4"
+                >
+                  <span className="font-semibold">{hotel.name}:</span>
+                  <p>
+                    {hotel.description.length > 40
+                      ? `${hotel.description.slice(0, 40)}...`
+                      : hotel.description}
+                  </p>
+                </article>
+              ))}
+            </div>
+          )} */}
+          </NavbarContent>
+        </div>
+      )}
       <NavbarContent justify="end">
         <ThemeToggle currentMode={currentMode} toggleTheme={toggleTheme} />
         {User ? (
@@ -168,10 +183,10 @@ export default function App() {
             </DropdownMenu>
           </Dropdown>
         ) : (
-          <div>
+          <div className="flex items-center gap-4">
             <NavbarItem className="hidden lg:flex">
               <Link
-                href="#"
+                href="/login"
                 className="text-black dark:text-white text-xl font-semibold"
               >
                 Login
@@ -180,7 +195,7 @@ export default function App() {
             <NavbarItem>
               <Button
                 as={Link}
-                href="#"
+                href="/login"
                 variant="flat"
                 className="text-black dark:text-white text-xl font-semibold"
               >
@@ -198,6 +213,9 @@ export default function App() {
             isClearable
             radius="lg"
             classNames={styles}
+            value={searchParam}
+            onChange={(e) => setSearchParam(e.target.value)}
+            onClear={() => setSearchParam("")}
             placeholder="Search for hotels, cities..."
             startContent={
               <FaSearch className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
@@ -215,3 +233,64 @@ export default function App() {
     </Navbar>
   );
 }
+
+const animals = [
+  {
+    label: "Cat",
+    value: "cat",
+    description: "The second most popular pet in the world",
+  },
+  {
+    label: "Dog",
+    value: "dog",
+    description: "The most popular pet in the world",
+  },
+  {
+    label: "Elephant",
+    value: "elephant",
+    description: "The largest land animal",
+  },
+  { label: "Lion", value: "lion", description: "The king of the jungle" },
+  { label: "Tiger", value: "tiger", description: "The largest cat species" },
+  {
+    label: "Giraffe",
+    value: "giraffe",
+    description: "The tallest land animal",
+  },
+  {
+    label: "Dolphin",
+    value: "dolphin",
+    description: "A widely distributed and diverse group of aquatic mammals",
+  },
+  {
+    label: "Penguin",
+    value: "penguin",
+    description: "A group of aquatic flightless birds",
+  },
+  {
+    label: "Zebra",
+    value: "zebra",
+    description: "A several species of African equids",
+  },
+  {
+    label: "Shark",
+    value: "shark",
+    description:
+      "A group of elasmobranch fish characterized by a cartilaginous skeleton",
+  },
+  {
+    label: "Whale",
+    value: "whale",
+    description: "Diverse group of fully aquatic placental marine mammals",
+  },
+  {
+    label: "Otter",
+    value: "otter",
+    description: "A carnivorous mammal in the subfamily Lutrinae",
+  },
+  {
+    label: "Crocodile",
+    value: "crocodile",
+    description: "A large semiaquatic reptile",
+  },
+];

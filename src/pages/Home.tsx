@@ -10,7 +10,7 @@ import {
   recentlyVisitedHotels as RecentlyVisitedHotelsFun,
 } from "../redux/thunks/homeThunk";
 import { toast } from "react-toastify";
-import { RootState } from "../redux/store";
+import { AppDispatch, RootState } from "../redux/store";
 import GettingStarted from "../components/GettingStarted";
 
 const Home = () => {
@@ -31,14 +31,14 @@ const Home = () => {
     };
   }, []);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { featuredHotels, trendingHotels, hotelsRecentlyVisited, loading } =
     useSelector((state: RootState) => state.home);
 
   useEffect(() => {
     const fetchData = async (fetchFunction: any, ...args: any[]) => {
       try {
-        await dispatch(fetchFunction(...args) as any);
+        await dispatch(fetchFunction(...args));
       } catch (error: any) {
         toast.error(error.message || "An error occurred");
       }

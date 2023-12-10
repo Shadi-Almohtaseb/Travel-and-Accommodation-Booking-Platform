@@ -39,11 +39,8 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f7f7f7] flex-col py-4 sm:px-6 lg:px-4">
-      <div>
-        <Image src={LogoImage} alt="Logo" className="w-[120px]" />
-      </div>
-      <div className="sm:mx-auto sm:w-full sm:max-w-md flex justify-center items-center gap-5 mt-14">
+    <div className="min-h-screen dark:bg-default-50 bg-slate-50 flex-col py-4 sm:px-6 lg:px-4">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md flex justify-center items-center gap-5 mt-[12rem]">
         <h2 className="text-center text-4xl font-extrabold">Login</h2>
         <img
           width="55"
@@ -53,14 +50,14 @@ const Login = () => {
         />
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md flex items-center justify-start w-full">
-        <div className="bg-white py-8 px-4 shadow-xl sm:rounded-lg sm:px-10 w-full">
+        <div className="bg-default-100 py-8 px-4 shadow-xl sm:rounded-lg sm:px-10 w-full">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor="userName"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium dark:text-white text-black"
               >
-                User name
+                User Name
               </label>
               <div className="mt-1">
                 <input
@@ -80,7 +77,7 @@ const Login = () => {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium dark:text-white text-black"
               >
                 Password
               </label>
@@ -124,7 +121,7 @@ const Login = () => {
             </div>
             <div>
               <h4>Don't have an account?</h4>
-              <Link href="/sign-up" className="text-blue-600">
+              <Link href="/login" className="text-blue-600">
                 Sign up
               </Link>
             </div>
