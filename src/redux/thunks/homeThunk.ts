@@ -54,6 +54,9 @@ export const recentlyVisitedHotels = createAsyncThunk('get-RecentlyVisited-hotel
 export const searchForHotels = createAsyncThunk('search-hotels', async (hotelName: string, { rejectWithValue }) => {
   try {
     const response = await fetch(searchHotelsRoute(hotelName), { method: 'GET' });
+    if (hotelName === '') {
+      return []
+    }
     if (response.ok) {
       const data = await response.json();
       return data;

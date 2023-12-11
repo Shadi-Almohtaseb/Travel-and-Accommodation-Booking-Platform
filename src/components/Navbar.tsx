@@ -52,7 +52,6 @@ export default function App() {
   useEffect(() => {
     try {
       dispatch(searchForHotels(searchParam));
-      console.log("searchHotels", searchHotels);
     } catch (error) {
       console.log(error);
       toast.error("cant search, Something went wrong");
@@ -108,7 +107,7 @@ export default function App() {
             </NavbarItem>
           </NavbarContent>
 
-          <NavbarContent className="hidden sm:flex flex-col">
+          <NavbarContent className="relative hidden sm:flex flex-col">
             <Input
               label="Search"
               isClearable
@@ -122,23 +121,23 @@ export default function App() {
                 <FaSearch className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
               }
             />
-            {/* {searchHotels && searchHotels.length > 0 && (
-            <div className="absolute top-16 bg-default-100 p-2 rounded-xl">
-              {searchHotels.map((hotel: any) => (
-                <article
-                  key={hotel.description}
-                  className="flex items-center mb-1 gap-2 bg-default-200 hover:bg-default-50 rounded-xl py-2 px-4"
-                >
-                  <span className="font-semibold">{hotel.name}:</span>
-                  <p>
-                    {hotel.description.length > 40
-                      ? `${hotel.description.slice(0, 40)}...`
-                      : hotel.description}
-                  </p>
-                </article>
-              ))}
-            </div>
-          )} */}
+            {searchHotels && searchHotels.length > 0 && (
+              <div className="absolute top-16 bg-default-100 p-2 rounded-xl w-full">
+                {searchHotels.map((hotel: any) => (
+                  <article
+                    key={hotel.description}
+                    className="flex items-center cursor-pointer mb-1 gap-2 bg-default-200 hover:bg-default-50 rounded-xl py-2 px-4"
+                  >
+                    <span className="font-semibold">{hotel.name}:</span>
+                    <p>
+                      {hotel.description.length > 40
+                        ? `${hotel.description.slice(0, 40)}...`
+                        : hotel.description}
+                    </p>
+                  </article>
+                ))}
+              </div>
+            )}
           </NavbarContent>
         </div>
       )}

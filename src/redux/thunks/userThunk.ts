@@ -54,7 +54,6 @@ export const loginUser = createAsyncThunk('login-User', async (payload: UserLogi
       body: JSON.stringify(payload)
     });
 
-
     if (response.ok) {
       const data = await response.json();
       localStorage.setItem("User", JSON.stringify(data));
