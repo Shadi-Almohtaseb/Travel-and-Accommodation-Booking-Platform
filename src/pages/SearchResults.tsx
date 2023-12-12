@@ -40,8 +40,8 @@ const SearchResults = () => {
     content: "text-small px-2",
   };
   return (
-    <div className="flex md:flex-row flex-col justify-center gap-8 lg:px-20 px-5 pb-10 pt-[5.1rem] dark:bg-[#0e0e10] min-h-screen h-full">
-      <article className="lg:sticky top-28 w-[480px] dark:bg-default-100 bg-default-200 shadow-lg rounded-lg min-h-full h-full p-4">
+    <div className="flex lg:flex-row flex-col justify-center gap-8 lg:px-20 px-5 pb-10 pt-[5.1rem] bg-[#eaeaea] dark:bg-[#0e0e10] min-h-screen h-full">
+      <article className="lg:sticky top-20 lg:max-w-[420px] min-w-[250px] w-full dark:bg-default-100 bg-default-300 shadow-lg rounded-lg min-h-full h-full p-4">
         <Accordion
           showDivider={false}
           className="p-2 flex flex-col gap-1 w-full mt-4"
@@ -59,7 +59,7 @@ const SearchResults = () => {
           </AccordionItem>
         </Accordion>
       </article>
-      <article className="w-full dark:bg-default-100 bg-default-200 shadow-lg rounded-lg min-h-full h-full p-4">
+      <article className="w-full dark:bg-default-100 bg-default-300 shadow-lg rounded-lg min-h-full h-full p-4">
         <div className="flex items-center justify-between px-5 py-3">
           <div>
             <span className="text-2xl">Title</span>
@@ -81,7 +81,7 @@ const SearchResults = () => {
             ))}
           </Select>
         </div>
-        <aside className="flex flex-col gap-5 mt-10">
+        <aside className="flex flex-col gap-5 mt-5">
           {searchResults ? (
             searchResults.map((item: searchResultType) => (
               <SearchResultsCard key={item.name} item={item} />

@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import { ToastContainer } from "react-toastify";
 import { PrivateRoute } from "./utils/PrivateRoute";
 import SearchResults from "./pages/SearchResults";
+import HotelPage from "./pages/HotelPage";
 
 function App() {
   return (
@@ -22,6 +23,14 @@ function App() {
           element={
             <PrivateRoute>
               <SearchResults />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/hotel/:hotelId"
+          element={
+            <PrivateRoute>
+              <HotelPage />
             </PrivateRoute>
           }
         />

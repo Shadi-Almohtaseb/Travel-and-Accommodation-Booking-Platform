@@ -68,7 +68,7 @@ const Home = () => {
             <motion.div
               initial={{ opacity: 0, x: 120 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1, delay: 0.5 }}
+              transition={{ duration: 1, delay: 0.8 }}
             >
               <span className="lg:text-[6rem] md:text-[4rem] text-[3rem] leading-tight">
                 Plan Your <br /> Perfect Getaway
@@ -77,7 +77,7 @@ const Home = () => {
             <motion.div
               initial={{ opacity: 0, x: -120 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1, delay: 0.5 }}
+              transition={{ duration: 1, delay: 0.8 }}
             >
               <p className="mt-10 lg:text-[1.4rem] text-[1rem]">
                 Explore our travel platform to discover amazing destinations
@@ -92,7 +92,7 @@ const Home = () => {
             <motion.div
               initial={{ opacity: 0, y: 120 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.5 }}
+              transition={{ duration: 1, delay: 0.8 }}
             >
               <Link href="#getting-started">
                 <Button
