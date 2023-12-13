@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import LogoImage from "../assets/images/image-removebg-preview (3).png";
 import { toast } from "react-toastify";
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegEyeSlash } from "react-icons/fa";
-import { Image } from "@nextui-org/react";
 import { Link } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";

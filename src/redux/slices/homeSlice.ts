@@ -1,11 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { featuredHotels, trendingHotels, recentlyVisitedHotels, searchForHotels } from '../thunks/homeThunk';
+import { featuredHotels, trendingHotels, recentlyVisitedHotels } from '../thunks/homeThunk';
 
 const initialState = {
   featuredHotels: null,
   trendingHotels: null,
   hotelsRecentlyVisited: null,
-  searchHotels: null,
   isError: false,
   loading: false,
 } as any;
@@ -59,20 +58,6 @@ const homeSlice = createSlice({
       state.isError = false;
     });
     builder.addCase(recentlyVisitedHotels.rejected, (state) => {
-      state.loading = false;
-      state.isError = true
-    });
-    // Reducers for search for hotels action
-    builder.addCase(searchForHotels.fulfilled, (state, action) => {
-      state.searchHotels = action.payload
-      state.loading = false;
-      state.isError = false
-    });
-    builder.addCase(searchForHotels.pending, (state) => {
-      state.loading = true;
-      state.isError = false;
-    });
-    builder.addCase(searchForHotels.rejected, (state) => {
       state.loading = false;
       state.isError = true
     });

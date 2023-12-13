@@ -6,9 +6,10 @@ import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
 import { ToastContainer } from "react-toastify";
-import { PrivateRoute } from "./utils/PrivateRoute";
+import { PrivateAdminRoute, PrivateUserRoute } from "./utils/PrivateRoute";
 import SearchResults from "./pages/SearchResults";
 import HotelPage from "./pages/HotelPage";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   return (
@@ -21,17 +22,25 @@ function App() {
         <Route
           path="/search-results"
           element={
-            <PrivateRoute>
+            <PrivateUserRoute>
               <SearchResults />
-            </PrivateRoute>
+            </PrivateUserRoute>
           }
         />
         <Route
           path="/hotel/:hotelId"
           element={
-            <PrivateRoute>
+            <PrivateUserRoute>
               <HotelPage />
-            </PrivateRoute>
+            </PrivateUserRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateAdminRoute>
+              <AdminDashboard />
+            </PrivateAdminRoute>
           }
         />
       </Routes>

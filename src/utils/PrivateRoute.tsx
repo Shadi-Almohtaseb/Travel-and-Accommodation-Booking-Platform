@@ -8,10 +8,20 @@ interface PrivateRouteProps {
   children: ReactNode;
 }
 
-export const PrivateRoute = ({ children }: PrivateRouteProps) => {
+export const PrivateUserRoute = ({ children }: PrivateRouteProps) => {
   const { User } = useSelector((state: RootState) => state.authUser);
 
-  if (!User) {
+  if (!User || User.userType !== "User") {
+    return <Navigate to="/login" />;
+  }
+
+  return children;
+};
+
+export const PrivateAdminRoute = ({ children }: PrivateRouteProps) => {
+  const { User } = useSelector((state: RootState) => state.authUser);
+
+  if (!User || User.userType !== "Admin") {
     return <Navigate to="/login" />;
   }
 

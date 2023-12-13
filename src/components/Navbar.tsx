@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  Navbar,
+  Navbar as NavbarComponent,
   User as UserComponent,
   NavbarContent,
   NavbarItem,
@@ -36,7 +36,7 @@ const menuItems = [
   "Log Out",
 ];
 
-export default function App() {
+const Navbar = () => {
   const { currentMode, toggleTheme } = useThemeSettings();
   const { User } = useSelector((state: RootState) => state.authUser);
   const [searchParam, setSearchParam] = useState("");
@@ -47,7 +47,7 @@ export default function App() {
   };
 
   const dispatch = useDispatch<AppDispatch>();
-  const { searchHotels } = useSelector((state: RootState) => state.home);
+  const { searchHotels } = useSelector((state: RootState) => state.searchBar);
 
   useEffect(() => {
     try {
@@ -59,7 +59,7 @@ export default function App() {
   }, [searchParam, dispatch]);
 
   return (
-    <Navbar
+    <NavbarComponent
       disableAnimation
       maxWidth="full"
       className="bg-transparent dark:bg-transparent shadow-none fixed py-1 z-50"
@@ -70,7 +70,7 @@ export default function App() {
       <Link href="/" className="hidden sm:flex cursor-pointer">
         <Image src={LogoImage} alt="Logo" className="w-[100px] lg:p-4 p-5" />
       </Link>
-      {User && (
+      {User && User.userType === "User" ? (
         <div className="flex items-center justify-center lg:w-[60%] gap-8">
           <NavbarContent justify="start" className="hidden md:flex gap-8">
             <NavbarItem isActive>
@@ -125,22 +125,40 @@ export default function App() {
               <div className="absolute top-16 bg-default-100 p-2 rounded-xl w-full">
                 {searchHotels.map((hotel: any) => (
                   <article
-                    key={hotel.description}
+                    key={hotel.latitude}
                     className="flex items-center cursor-pointer mb-1 gap-2 bg-default-200 hover:bg-default-50 rounded-xl py-2 px-4"
                   >
-                    <span className="font-semibold">{hotel.name}:</span>
-                    <p>
-                      {hotel.description.length > 40
-                        ? `${hotel.description.slice(0, 40)}...`
-                        : hotel.description}
-                    </p>
+                    <Image
+                      src={hotel.roomPhotoUrl}
+                      className=""
+                      alt="hotel"
+                      width={50}
+                      height={50}
+                    />
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold">{hotel.cityName}:</span>
+                      <p>{hotel.hotelName}</p>
+                    </div>
                   </article>
                 ))}
               </div>
             )}
           </NavbarContent>
         </div>
-      )}
+      ) : User && User.userType === "Admin" ? (
+        // Code for user type "Admin"
+        <div className="sm:flex hidden">
+          <Button
+            as={Link}
+            href="/dashboard"
+            variant="flat"
+            color="primary"
+            className="text-black dark:text-white text-lg font-semibold"
+          >
+            Dashboard
+          </Button>
+        </div>
+      ) : null}
       <NavbarContent justify="end">
         <ThemeToggle currentMode={currentMode} toggleTheme={toggleTheme} />
         {User ? (
@@ -229,67 +247,8 @@ export default function App() {
           </NavbarMenuItem>
         ))}
       </NavbarMenu>
-    </Navbar>
+    </NavbarComponent>
   );
-}
+};
 
-const animals = [
-  {
-    label: "Cat",
-    value: "cat",
-    description: "The second most popular pet in the world",
-  },
-  {
-    label: "Dog",
-    value: "dog",
-    description: "The most popular pet in the world",
-  },
-  {
-    label: "Elephant",
-    value: "elephant",
-    description: "The largest land animal",
-  },
-  { label: "Lion", value: "lion", description: "The king of the jungle" },
-  { label: "Tiger", value: "tiger", description: "The largest cat species" },
-  {
-    label: "Giraffe",
-    value: "giraffe",
-    description: "The tallest land animal",
-  },
-  {
-    label: "Dolphin",
-    value: "dolphin",
-    description: "A widely distributed and diverse group of aquatic mammals",
-  },
-  {
-    label: "Penguin",
-    value: "penguin",
-    description: "A group of aquatic flightless birds",
-  },
-  {
-    label: "Zebra",
-    value: "zebra",
-    description: "A several species of African equids",
-  },
-  {
-    label: "Shark",
-    value: "shark",
-    description:
-      "A group of elasmobranch fish characterized by a cartilaginous skeleton",
-  },
-  {
-    label: "Whale",
-    value: "whale",
-    description: "Diverse group of fully aquatic placental marine mammals",
-  },
-  {
-    label: "Otter",
-    value: "otter",
-    description: "A carnivorous mammal in the subfamily Lutrinae",
-  },
-  {
-    label: "Crocodile",
-    value: "crocodile",
-    description: "A large semiaquatic reptile",
-  },
-];
+export default Navbar;
