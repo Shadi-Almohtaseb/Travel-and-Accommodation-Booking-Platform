@@ -1,5 +1,5 @@
 import { Accordion, AccordionItem, Image } from "@nextui-org/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { GrLocation } from "react-icons/gr";
 import { FaStar } from "react-icons/fa";
 import Carousel from "react-multi-carousel";
@@ -9,64 +9,78 @@ import image2 from "../assets/images/wallpaperflare.com_wallpaper (2).jpg";
 import image3 from "../assets/images/wallpaperflare.com_wallpaper (3).jpg";
 import useAnimationInView from "../hooks/useAnimationInView";
 import { motion } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
+import { getHotelById } from "../redux/thunks/searchBarThunk";
+import { toast } from "react-toastify";
+
+export type HotelAmenity = {
+  name: string;
+  description: string;
+};
 
 const HotelPage = () => {
   const images = [image1, image2, image3, image1, image2, image3];
   const { controls, ref } = useAnimationInView();
+  const dispatch = useDispatch<AppDispatch>();
+  const { hotel } = useSelector((state: RootState) => state.searchBar);
+
+  useEffect(() => {
+    const fetchHotel = async () => {
+      try {
+        await dispatch(getHotelById(1));
+      } catch (error) {
+        console.log(error);
+        toast.error("Can't get, something went wrong");
+      }
+    };
+
+    fetchHotel();
+  }, [dispatch]);
 
   return (
     <div className="flex lg:flex-row flex-col justify-center gap-8 lg:px-20 px-5 pb-10 pt-[5.1rem] dark:bg-[#0e0e10] bg-[#eaeaea] min-h-screen h-full">
       <article className="lg:sticky top-20 lg:max-w-[420px] min-w-[250px] w-full dark:bg-default-100 bg-default-300 shadow-lg rounded-lg min-h-full h-full p-4">
         <div className="flex justify-center items-center w-full">
           <Image
-            src={image1}
+            src={hotel?.imageUrl || image1}
             alt="hotel image"
             className="mb-5 max-h-[250px] w-full rounded-xl"
           />
         </div>
-        <span className="text-3xl">Plaza Hotel</span>
+        <span className="text-3xl">{hotel?.hotelName}</span>
         <div className="flex gap-2 my-5">
           <GrLocation size={30} />
-          <span className="text-xl">Ramallah, Palestine</span>
+          <span className="text-xl">{hotel?.location}</span>
         </div>
-        <p className="mb-5">
-          Experience luxury and comfort at Plaza Hotel, located in the heart of
-          Ramallah. Our hotel offers a perfect blend of modern amenities and
-          traditional hospitality.
-        </p>
+        <p className="mb-5">{hotel?.description}</p>
         <span className="text-lg font-semibold">Amenities:</span>
         <div className="mb-8">
-          <Accordion
-            showDivider={false}
-            className="p-2 flex flex-col gap-1 w-full my-2"
-            variant="shadow"
-            itemClasses={itemClasses}
-          >
-            <AccordionItem key="1" aria-label="Free Wi-Fi" title="Free Wi-Fi">
-              High-speed internet available in all rooms.
-            </AccordionItem>
-            <AccordionItem
-              key="2"
-              aria-label="Fitness Center"
-              title="Fitness Center"
+          {hotel?.amenities && (
+            <Accordion
+              showDivider={false}
+              className="p-2 flex flex-col gap-1 w-full my-2"
+              variant="shadow"
+              itemClasses={itemClasses}
             >
-              Stay fit with our well-equipped fitness center.
-            </AccordionItem>
-            <AccordionItem
-              key="3"
-              aria-label="Swimming Pool"
-              title="Swimming Pool"
-            >
-              Relax by the poolside and enjoy a refreshing swim.
-            </AccordionItem>
-          </Accordion>
+              {hotel.amenities.map((amenity: HotelAmenity) => (
+                <AccordionItem
+                  key={amenity.name}
+                  aria-label={amenity.name}
+                  title={amenity.name}
+                >
+                  {amenity.description}
+                </AccordionItem>
+              ))}
+            </Accordion>
+          )}
         </div>
         <span className="flex items-center gap-2 text-xl mb-2">
           <span>Rating: </span>
-          5
+          {hotel?.starRating}
           <FaStar className="text-[#f8e42a]" />
         </span>
-        <div className="text-lg">Available Rooms: 50</div>
+        <div className="text-lg">Available Rooms: {hotel?.availableRooms}</div>
       </article>
       <article className="lg:max-w-[77%] w-full dark:bg-default-100 bg-default-300 shadow-lg rounded-lg min-h-full h-full p-4">
         {false ? (
@@ -115,7 +129,7 @@ const HotelPage = () => {
         )}
 
         <div className="mt-16">
-          <span>HHoiii</span>
+          <span>Available Rooms</span>
         </div>
       </article>
     </div>

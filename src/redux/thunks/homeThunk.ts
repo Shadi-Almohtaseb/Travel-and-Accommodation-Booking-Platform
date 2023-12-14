@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { homeApiUrls } from '../../api/homeAPI';
 
-const { featuredHotelsRoute, trendingHotelsRoute, UsersRecentlyVisitedRoute, searchHotelsRoute } = homeApiUrls;
+const { featuredHotelsRoute, trendingHotelsRoute, UsersRecentlyVisitedRoute } = homeApiUrls;
 
 export const featuredHotels = createAsyncThunk('get-featured-hotels', async () => {
   try {
@@ -48,24 +48,5 @@ export const recentlyVisitedHotels = createAsyncThunk('get-RecentlyVisited-hotel
     }
   } catch (error) {
     throw error
-  }
-});
-
-export const searchForHotels = createAsyncThunk('search-hotels', async (hotelName: string, { rejectWithValue }) => {
-  try {
-    const response = await fetch(searchHotelsRoute(hotelName), { method: 'GET' });
-    if (hotelName === '') {
-      return []
-    }
-    if (response.ok) {
-      const data = await response.json();
-      return data;
-    } else {
-      const errorData = await response.json();
-      const errorMessage = errorData.error || 'An error occurred';
-      throw errorMessage
-    }
-  } catch (error) {
-    return rejectWithValue(error);
   }
 });

@@ -25,7 +25,7 @@ import { AppDispatch, RootState } from "../redux/store";
 import { CgLogOut, CgProfile } from "react-icons/cg";
 import { styles } from "../assets/styles/navStyle";
 import { toast } from "react-toastify";
-import { searchForHotels } from "../redux/thunks/homeThunk";
+import { searchForHotels } from "../redux/thunks/searchBarThunk";
 
 const menuItems = [
   "Profile",
@@ -47,7 +47,7 @@ const Navbar = () => {
   };
 
   const dispatch = useDispatch<AppDispatch>();
-  const { searchHotels } = useSelector((state: RootState) => state.searchBar);
+  const { searchedHotels } = useSelector((state: RootState) => state.searchBar);
 
   useEffect(() => {
     try {
@@ -121,26 +121,32 @@ const Navbar = () => {
                 <FaSearch className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
               }
             />
-            {searchHotels && searchHotels.length > 0 && (
+            {searchedHotels && searchedHotels.length > 0 && (
               <div className="absolute top-16 bg-default-100 p-2 rounded-xl w-full">
-                {searchHotels.map((hotel: any) => (
-                  <article
-                    key={hotel.latitude}
-                    className="flex items-center cursor-pointer mb-1 gap-2 bg-default-200 hover:bg-default-50 rounded-xl py-2 px-4"
-                  >
-                    <Image
-                      src={hotel.roomPhotoUrl}
-                      className=""
-                      alt="hotel"
-                      width={50}
-                      height={50}
-                    />
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold">{hotel.cityName}:</span>
-                      <p>{hotel.hotelName}</p>
-                    </div>
-                  </article>
-                ))}
+                {searchedHotels.map((hotel: any) => {
+                  const concatenatedValue = (
+                    hotel.latitude.toString() + hotel.longitude.toString()
+                  ).replace(/\./g, "");
+                  return (
+                    <Link
+                      href={`/hotel/${concatenatedValue}`}
+                      key={hotel.latitude}
+                      className="flex items-center cursor-pointer mb-1 gap-2 bg-default-200 hover:bg-default-50 rounded-xl py-2 px-4"
+                    >
+                      <Image
+                        src={hotel.roomPhotoUrl}
+                        className=""
+                        alt="hotel"
+                        width={50}
+                        height={50}
+                      />
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold">{hotel.cityName}:</span>
+                        <p>{hotel.hotelName}</p>
+                      </div>
+                    </Link>
+                  );
+                })}
               </div>
             )}
           </NavbarContent>
