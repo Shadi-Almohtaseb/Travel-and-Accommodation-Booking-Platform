@@ -1,16 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { loginUser, logoutUser, signupUser } from '../thunks/userThunk';
+import { loginUser, logoutUser, fetchUser } from '../thunks/userThunk';
 
-let User = JSON.parse(localStorage.getItem("User") || "{}");
-let storedToken = localStorage.getItem("token");
-let token = storedToken ? JSON.parse(storedToken) : null;
+type UserType = {
+  userType: string,
+  given_name: string,
+  family_name: string,
+}
+
+interface UserState {
+  User: UserType | null,
+  isError: boolean,
+  loading: boolean,
+
+}
+
+let User: UserType = localStorage.getItem("User") ? JSON.parse(localStorage.getItem("User") as string) : null;
 
 const initialState = {
-  User: User ? User : {},
-  token: token ? token : null,
+  User: User ? User : null,
   isError: false,
   loading: false,
-} as any;
+} as UserState;
 
 const authUserSlice = createSlice({
   name: 'authUser',
@@ -22,26 +32,24 @@ const authUserSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Reducers for signupUser action
-    builder.addCase(signupUser.fulfilled, (state, action) => {
-      state.User = action.payload.User
-      state.token = action.payload.token;
+    // Reducers for fetchUser action
+    builder.addCase(fetchUser.fulfilled, (state, action) => {
+      state.User = action.payload
       state.loading = false;
       state.isError = false
     });
-    builder.addCase(signupUser.pending, (state) => {
+    builder.addCase(fetchUser.pending, (state) => {
       state.loading = true;
       state.isError = false;
     });
-    builder.addCase(signupUser.rejected, (state) => {
+    builder.addCase(fetchUser.rejected, (state) => {
       state.loading = false;
       state.isError = true
     });
 
     // Reducers for loginUser action
     builder.addCase(loginUser.fulfilled, (state, action) => {
-      state.User = action.payload.User
-      state.token = action.payload.token;
+      state.User = action.payload
       state.loading = false;
       state.isError = false
     });
@@ -56,8 +64,7 @@ const authUserSlice = createSlice({
 
     // Reducers for logoutUser action
     builder.addCase(logoutUser.fulfilled, (state) => {
-      state.User = {};
-      state.token = null;
+      state.User = null
       state.loading = false;
       state.isError = false
     });
