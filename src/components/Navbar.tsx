@@ -25,7 +25,7 @@ import { AppDispatch, RootState } from "../redux/store";
 import { CgLogOut, CgProfile } from "react-icons/cg";
 import { styles } from "../assets/styles/navStyle";
 import { toast } from "react-toastify";
-import { searchForHotels } from "../redux/thunks/searchBarThunk";
+import { SearchParams, searchForHotels } from "../redux/thunks/searchBarThunk";
 
 const menuItems = [
   "Profile",
@@ -39,10 +39,11 @@ const menuItems = [
 const Navbar = () => {
   const { currentMode, toggleTheme } = useThemeSettings();
   const { User } = useSelector((state: RootState) => state.authUser);
-  const [searchParam, setSearchParam] = useState("");
+  const [searchParam, setSearchParam] = useState<string>("");
 
   const handleLogout = () => {
     localStorage.removeItem("User");
+    localStorage.removeItem("pass");
     window.location.reload();
   };
 
@@ -51,7 +52,7 @@ const Navbar = () => {
 
   useEffect(() => {
     try {
-      dispatch(searchForHotels(searchParam));
+      dispatch(searchForHotels({ city: searchParam }));
     } catch (error) {
       console.log(error);
       toast.error("cant search, Something went wrong");
@@ -172,7 +173,7 @@ const Navbar = () => {
             <DropdownTrigger>
               <div className="flex items-center gap-5 hover:bg-slate-400 py-2 pl-2 pr-4 backdrop-blur-lg hover:bg-opacity-30 duration-200 cursor-pointer rounded-full">
                 <UserComponent
-                  name={User?.userType}
+                  name={User?.given_name + " " + User?.family_name}
                   description={
                     <Link href="#" size="sm">
                       @foothill.com

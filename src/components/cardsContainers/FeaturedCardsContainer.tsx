@@ -38,7 +38,7 @@ const FeaturedCardsContainer = ({
                 <FeaturedCard key={hotel.title} hotel={hotel} />
               ))
             ) : (
-              <p>No trending hotels available.</p>
+              <p>No featured hotels available.</p>
             )}
           </Carousel>
         </div>

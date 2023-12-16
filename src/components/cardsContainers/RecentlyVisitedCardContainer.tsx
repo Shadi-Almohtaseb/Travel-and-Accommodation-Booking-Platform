@@ -38,7 +38,7 @@ const RecentlyVisitedCardContainer = ({
                 <RecentlyVisitedCard key={hotel.cityName} hotel={hotel} />
               ))
             ) : (
-              <p>No trending hotels available.</p>
+              <p>No hotels available.</p>
             )}
           </Carousel>
         </div>

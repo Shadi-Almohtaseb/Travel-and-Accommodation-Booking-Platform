@@ -3,10 +3,32 @@ import { searchBarApiUrls } from '../../api/searchBarAPIs';
 
 const { searchHotelsRoute, getHotelRoute } = searchBarApiUrls;
 
-export const searchForHotels = createAsyncThunk('search-hotels', async (hotelName: string, { rejectWithValue }) => {
+export interface SearchParams {
+  city?: string;
+  checkInDate?: string;
+  checkOutDate?: string;
+  adults?: number;
+  children?: number;
+}
+
+export const searchForHotels = createAsyncThunk('search-hotels', async (params: SearchParams, { rejectWithValue }) => {
+  const { city, checkInDate, checkOutDate, adults, children } = params;
+
   try {
-    const response = await fetch(searchHotelsRoute(hotelName), { method: 'GET' });
-    if (hotelName === '') {
+    const response = await fetch(searchHotelsRoute(
+      city || '',
+      checkInDate || '',
+      checkOutDate || '',
+      adults || 0,
+      children || 0
+    ), {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('pass')}`
+      },
+    });
+
+    if (city === '' || checkInDate === '' || checkOutDate === '' || adults === 0 || children === 0) {
       return []
     }
     if (response.ok) {
@@ -24,7 +46,12 @@ export const searchForHotels = createAsyncThunk('search-hotels', async (hotelNam
 
 export const getHotelById = createAsyncThunk('get-hotel', async (hotelId: number, { rejectWithValue }) => {
   try {
-    const response = await fetch(getHotelRoute(hotelId), { method: 'GET' });
+    const response = await fetch(getHotelRoute(hotelId), {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('pass')}`
+      },
+    });
     if (response.ok) {
       const data = await response.json();
       return data;

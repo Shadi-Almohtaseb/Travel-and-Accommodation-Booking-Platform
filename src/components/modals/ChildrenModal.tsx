@@ -14,13 +14,18 @@ import {
 import { FaPeopleArrows } from "react-icons/fa";
 import { MdChildFriendly } from "react-icons/md";
 
-export default function App() {
+interface AppProps {
+  setAdults: React.Dispatch<React.SetStateAction<number>>;
+  setChildren: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export default function ChildrenModal({ setAdults, setChildren }: AppProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
     <>
-      <Button onPress={onOpen} color="primary">
-        Open Modal
+      <Button onPress={onOpen} color="primary" variant="ghost">
+        # of Individuals
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
         <ModalContent>
@@ -33,18 +38,21 @@ export default function App() {
                   endContent={
                     <FaPeopleArrows className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                   }
-                  label="Email"
-                  placeholder="Enter your email"
+                  label="Adults"
+                  placeholder="how many Adults..."
+                  type="number"
                   variant="bordered"
+                  onChange={(e) => setAdults(parseInt(e.target.value))}
                 />
                 <Input
                   endContent={
                     <MdChildFriendly className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                   }
-                  label="Password"
-                  placeholder="Enter your password"
-                  type="password"
+                  label="Children"
+                  placeholder="how many Children..."
+                  type="number"
                   variant="bordered"
+                  onChange={(e) => setChildren(parseInt(e.target.value))}
                 />
                 <div className="flex py-2 px-1 justify-between">
                   <Checkbox
@@ -52,11 +60,8 @@ export default function App() {
                       label: "text-small",
                     }}
                   >
-                    Remember me
+                    Remember this
                   </Checkbox>
-                  <Link color="primary" href="#" size="sm">
-                    Forgot password?
-                  </Link>
                 </div>
               </ModalBody>
               <ModalFooter>
@@ -64,7 +69,7 @@ export default function App() {
                   Close
                 </Button>
                 <Button color="primary" onPress={onClose}>
-                  Sign in
+                  Done
                 </Button>
               </ModalFooter>
             </>

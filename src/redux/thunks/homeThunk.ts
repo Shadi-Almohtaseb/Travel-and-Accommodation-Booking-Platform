@@ -37,7 +37,12 @@ export const trendingHotels = createAsyncThunk('get-trending-hotels', async () =
 
 export const recentlyVisitedHotels = createAsyncThunk('get-RecentlyVisited-hotels', async (userId: number) => {
   try {
-    const response = await fetch(UsersRecentlyVisitedRoute(userId), { method: 'GET' });
+    const response = await fetch(UsersRecentlyVisitedRoute(userId), {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('pass')}`
+      },
+    });
     if (response.ok) {
       const data = await response.json();
       return data;
