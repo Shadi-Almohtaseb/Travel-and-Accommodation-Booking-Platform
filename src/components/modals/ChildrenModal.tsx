@@ -9,7 +9,6 @@ import {
   useDisclosure,
   Checkbox,
   Input,
-  Link,
 } from "@nextui-org/react";
 import { FaPeopleArrows } from "react-icons/fa";
 import { MdChildFriendly } from "react-icons/md";
@@ -31,7 +30,9 @@ export default function ChildrenModal({ setAdults, setChildren }: AppProps) {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                Individuals
+              </ModalHeader>
               <ModalBody>
                 <Input
                   autoFocus

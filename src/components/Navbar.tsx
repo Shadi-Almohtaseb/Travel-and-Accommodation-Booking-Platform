@@ -26,6 +26,7 @@ import { CgLogOut, CgProfile } from "react-icons/cg";
 import { styles } from "../assets/styles/navStyle";
 import { toast } from "react-toastify";
 import { SearchParams, searchForHotels } from "../redux/thunks/searchBarThunk";
+import CartDrawer from "./CartDrawer";
 
 const menuItems = [
   "Profile",
@@ -58,6 +59,12 @@ const Navbar = () => {
       toast.error("cant search, Something went wrong");
     }
   }, [searchParam, dispatch]);
+
+  // drawer
+  const [isOpen, setIsOpen] = React.useState(false);
+  const toggleDrawer = () => {
+    setIsOpen((prevState) => !prevState);
+  };
 
   return (
     <NavbarComponent
@@ -167,6 +174,11 @@ const Navbar = () => {
         </div>
       ) : null}
       <NavbarContent justify="end">
+        <CartDrawer
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          toggleDrawer={toggleDrawer}
+        />
         <ThemeToggle currentMode={currentMode} toggleTheme={toggleTheme} />
         {User ? (
           <Dropdown>
