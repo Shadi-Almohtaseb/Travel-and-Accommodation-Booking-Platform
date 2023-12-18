@@ -4,6 +4,7 @@ import homeSlice from "./slices/homeSlice";
 import searchResults from "./slices/searchResultsSlice";
 import searchBarSlice from "./slices/searchBarSlice";
 import citySlice from "./slices/citySlice";
+import cartSlice from "./slices/cartSlice";
 
 const makeStore = () => {
   return configureStore({
@@ -13,6 +14,7 @@ const makeStore = () => {
       searchResults: searchResults,
       searchBar: searchBarSlice,
       city: citySlice,
+      cart: cartSlice,
     },
   });
 }

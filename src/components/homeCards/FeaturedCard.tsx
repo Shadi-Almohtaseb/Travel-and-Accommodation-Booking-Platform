@@ -1,4 +1,4 @@
-import { Image } from "@nextui-org/react";
+import { Button, Image } from "@nextui-org/react";
 import cardImage from "../../assets/images/wallpaperflare.com_wallpaper (1).jpg";
 import React from "react";
 import { GrLocation } from "react-icons/gr";
@@ -6,6 +6,10 @@ import { FaStar } from "react-icons/fa";
 import { Hotel } from "../../@types/hotel";
 import useAnimationInView from "../../hooks/useAnimationInView";
 import { motion } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import { addItem, removeItem } from "../../redux/slices/cartSlice";
+import { toast } from "react-toastify";
 
 interface HotelProps {
   hotel: Hotel;
@@ -13,6 +17,22 @@ interface HotelProps {
 
 const FeaturedCard = ({ hotel }: HotelProps) => {
   const { controls, ref } = useAnimationInView();
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { cart } = useSelector((state: RootState) => state.cart);
+
+  console.log(cart);
+
+  const handleAddToCart = (title: string) => {
+    const item = cart.find((item: any) => item.id === title);
+    if (!item) {
+      dispatch(addItem({ id: title }));
+      toast.success("Added to cart");
+    } else {
+      dispatch(removeItem({ id: title }));
+      toast.warn("Removed from cart");
+    }
+  };
 
   return (
     <motion.div
@@ -51,10 +71,19 @@ const FeaturedCard = ({ hotel }: HotelProps) => {
             <span className="text-xl -mt-2 mr-2">{hotel.finalPrice}$</span>
           </div>
         </div>
-        <p className="mt-2 p-4">
+        <p className="flex justify-between flex-col gap-4 mt-2 p-4">
           {hotel.description.length > 100
             ? hotel.description.slice(0, 100) + "..."
             : hotel.description}
+          <Button
+            variant="flat"
+            onClick={() => handleAddToCart(hotel.title)}
+            className="text-white text-lg bg-blue-500"
+          >
+            {cart.find((item: any) => item.id === hotel.title)
+              ? "Remove from cart"
+              : "Add to cart"}
+          </Button>
         </p>
       </article>
     </motion.div>

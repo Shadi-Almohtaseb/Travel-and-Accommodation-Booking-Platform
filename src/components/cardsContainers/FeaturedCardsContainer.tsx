@@ -4,6 +4,7 @@ import { Hotel } from "../../@types/hotel";
 import Loading from "../../components/Loading";
 import Carousel from "react-multi-carousel";
 import FeaturedCard from ".././homeCards/FeaturedCard";
+import { Link } from "react-router-dom";
 
 interface featuredCardsContainerProps {
   featuredHotels: Hotel[];
@@ -32,10 +33,13 @@ const FeaturedCardsContainer = ({
             removeArrowOnDeviceType={["tablet", "mobile"]}
             dotListClass="custom-dot-list-style"
             itemClass="carousel-item-padding-40-px flex justify-center pb-12"
+            className="z-0"
           >
             {featuredHotels && featuredHotels.length > 0 ? (
               featuredHotels.map((hotel: Hotel) => (
-                <FeaturedCard key={hotel.title} hotel={hotel} />
+                <Link to={`/hotel/${Date.now()}`} key={hotel.title}>
+                  <FeaturedCard hotel={hotel} />
+                </Link>
               ))
             ) : (
               <p>No featured hotels available.</p>

@@ -3,6 +3,8 @@ import Drawer from "react-modern-drawer";
 import { FaCartShopping } from "react-icons/fa6";
 import { AiOutlineClose } from "react-icons/ai";
 import "react-modern-drawer/dist/index.css";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -11,6 +13,7 @@ interface CartDrawerProps {
 }
 
 const CartDrawer = ({ isOpen, setIsOpen, toggleDrawer }: CartDrawerProps) => {
+  const { cart } = useSelector((state: RootState) => state.cart);
   return (
     <div>
       <button
@@ -18,7 +21,7 @@ const CartDrawer = ({ isOpen, setIsOpen, toggleDrawer }: CartDrawerProps) => {
         className="relative p-2 rounded-full bg-gray-200 dark:bg-[#ffffff34] hover:bg-default-100 duration-250"
       >
         <span className="absolute -top-[6px] -right-[10px] bg-red-500 rounded-full w-6 h-6 text-white">
-          4
+          {cart?.length || 0}
         </span>
         <FaCartShopping size={23} />
       </button>

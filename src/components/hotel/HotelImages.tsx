@@ -41,6 +41,7 @@ const HotelImages = ({ hotelImages, loading }: HotelImagesProps) => {
               removeArrowOnDeviceType={["tablet", "mobile"]}
               dotListClass="custom-dot-list-style"
               itemClass="carousel-item-padding-40-px flex justify-center pb-12"
+              className="z-0"
             >
               {hotelImages && hotelImages?.length > 0 ? (
                 hotelImages?.map((image: HotelImage) => (
