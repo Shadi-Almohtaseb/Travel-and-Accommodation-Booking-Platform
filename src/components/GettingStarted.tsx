@@ -22,6 +22,7 @@ import { City } from "../redux/slices/citySlice";
 import { getAllCitiesThunk } from "../redux/thunks/cityThunk";
 import { toast } from "react-toastify";
 import { searchForHotels } from "../redux/thunks/searchBarThunk";
+import { useNavigate } from "react-router-dom";
 
 interface gettingStartedProps {
   featuredHotels: Hotel[];
@@ -59,12 +60,16 @@ const GettingStarted = ({
     fetchCities();
   }, [dispatch]);
 
+  const navigate = useNavigate();
+
   const handleSearch = async () => {
     try {
-      const res = await dispatch(
+      await dispatch(
         searchForHotels({ city, checkInDate, checkOutDate, adults, children })
       ).unwrap();
-      console.log("res", res);
+      if (city) {
+        navigate("/search-results");
+      }
     } catch (error) {
       toast.error("Can't get, something went wrong");
     }

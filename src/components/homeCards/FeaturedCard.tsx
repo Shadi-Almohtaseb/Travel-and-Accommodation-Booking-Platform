@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { addItem, removeItem } from "../../redux/slices/cartSlice";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 interface HotelProps {
   hotel: Hotel;
@@ -21,15 +22,13 @@ const FeaturedCard = ({ hotel }: HotelProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { cart } = useSelector((state: RootState) => state.cart);
 
-  console.log(cart);
-
-  const handleAddToCart = (title: string) => {
-    const item = cart.find((item: any) => item.id === title);
+  const handleAddToCart = (hotel: Hotel) => {
+    const item = cart.find((item: any) => item.id === hotel.title);
     if (!item) {
-      dispatch(addItem({ id: title }));
+      dispatch(addItem({ id: hotel.title, ...hotel }));
       toast.success("Added to cart");
     } else {
-      dispatch(removeItem({ id: title }));
+      dispatch(removeItem({ id: hotel.title, ...hotel }));
       toast.warn("Removed from cart");
     }
   };
@@ -75,15 +74,26 @@ const FeaturedCard = ({ hotel }: HotelProps) => {
           {hotel.description.length > 100
             ? hotel.description.slice(0, 100) + "..."
             : hotel.description}
-          <Button
-            variant="flat"
-            onClick={() => handleAddToCart(hotel.title)}
-            className="text-white text-lg bg-blue-500"
-          >
-            {cart.find((item: any) => item.id === hotel.title)
-              ? "Remove from cart"
-              : "Add to cart"}
-          </Button>
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              color="primary"
+              as={Link}
+              to={`/hotel/${Date.now()}`}
+              className="text-white text-base"
+            >
+              See more details...
+            </Button>
+            <Button
+              variant="flat"
+              onClick={() => handleAddToCart(hotel)}
+              className="text-white text-base bg-blue-500"
+            >
+              {cart.find((item: any) => item.id === hotel.title)
+                ? "Remove from cart"
+                : "Add to cart"}
+            </Button>
+          </div>
         </p>
       </article>
     </motion.div>

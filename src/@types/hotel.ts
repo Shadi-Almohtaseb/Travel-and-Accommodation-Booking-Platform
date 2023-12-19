@@ -59,3 +59,17 @@ export type HotelImage = {
   id: number,
   url: string,
 }
+
+// searchedHotel 
+export type SearchResultHotel = {
+  amenities: HotelAmenity[],
+  cityName: string
+  discount: number
+  hotelName: string
+  latitude: number
+  longitude: number
+  roomPhotoUrl: string
+  roomPrice: number
+  roomType: string
+  starRating: number
+}

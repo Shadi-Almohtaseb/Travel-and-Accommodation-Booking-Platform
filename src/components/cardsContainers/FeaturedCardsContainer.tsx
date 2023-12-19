@@ -37,9 +37,7 @@ const FeaturedCardsContainer = ({
           >
             {featuredHotels && featuredHotels.length > 0 ? (
               featuredHotels.map((hotel: Hotel) => (
-                <Link to={`/hotel/${Date.now()}`} key={hotel.title}>
-                  <FeaturedCard hotel={hotel} />
-                </Link>
+                <FeaturedCard key={hotel.title} hotel={hotel} />
               ))
             ) : (
               <p>No featured hotels available.</p>

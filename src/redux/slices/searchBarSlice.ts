@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { searchForHotels, getHotelById, getRoomsOfHotel, getHotelImages } from '../thunks/searchBarThunk';
-import { HotelImage, Room, SearchedHotel } from '../../@types/hotel';
+import { searchForHotels, getHotelById, getRoomsOfHotel, getHotelImages, getHotels } from '../thunks/searchBarThunk';
+import { HotelImage, Room, SearchedHotel, SearchResultHotel } from '../../@types/hotel';
 
 interface SearchBarState {
   searchedHotels: SearchedHotel[] | null;
+  searchResults: SearchResultHotel[] | null;
   hotel: SearchedHotel | null;
   rooms: Room[] | null;
   hotelImages: HotelImage[] | null;
@@ -13,6 +14,7 @@ interface SearchBarState {
 
 const initialState: SearchBarState = {
   searchedHotels: null,
+  searchResults: null,
   hotel: null,
   rooms: null,
   hotelImages: null,
@@ -41,6 +43,20 @@ const searchBarSlice = createSlice({
       state.isError = false;
     });
     builder.addCase(searchForHotels.rejected, (state) => {
+      state.loading = false;
+      state.isError = true;
+    });
+    // Reducers for search for hotels action
+    builder.addCase(getHotels.fulfilled, (state, action: PayloadAction<SearchResultHotel[]>) => {
+      state.searchResults = action.payload;
+      state.loading = false;
+      state.isError = false;
+    });
+    builder.addCase(getHotels.pending, (state) => {
+      state.loading = true;
+      state.isError = false;
+    });
+    builder.addCase(getHotels.rejected, (state) => {
       state.loading = false;
       state.isError = true;
     });
