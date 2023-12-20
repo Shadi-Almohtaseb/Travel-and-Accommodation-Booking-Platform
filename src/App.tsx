@@ -10,6 +10,8 @@ import { PrivateAdminRoute, PrivateUserRoute } from "./utils/PrivateRoute";
 import SearchResults from "./pages/SearchResults";
 import HotelPage from "./pages/HotelPage";
 import AdminDashboard from "./pages/AdminDashboard";
+import Checkout from "./pages/Checkout";
+import PaymentSuccessful from "./pages/PaymentSuccessful";
 
 function App() {
   return (
@@ -32,6 +34,22 @@ function App() {
           element={
             <PrivateUserRoute>
               <HotelPage />
+            </PrivateUserRoute>
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <PrivateUserRoute>
+              <Checkout />
+            </PrivateUserRoute>
+          }
+        />
+        <Route
+          path="/payment-successful"
+          element={
+            <PrivateUserRoute>
+              <PaymentSuccessful />
             </PrivateUserRoute>
           }
         />

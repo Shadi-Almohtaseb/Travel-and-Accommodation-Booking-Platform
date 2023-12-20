@@ -3,9 +3,12 @@ import Drawer from "react-modern-drawer";
 import { FaCartShopping } from "react-icons/fa6";
 import { AiOutlineClose } from "react-icons/ai";
 import "react-modern-drawer/dist/index.css";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
 import { Button, Image } from "@nextui-org/react";
+import { removeItem } from "../redux/slices/cartSlice";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -15,6 +18,20 @@ interface CartDrawerProps {
 
 const CartDrawer = ({ isOpen, setIsOpen, toggleDrawer }: CartDrawerProps) => {
   const { cart } = useSelector((state: RootState) => state.cart);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
+  const handleRemoveItem = (item: any) => {
+    dispatch(removeItem({ id: item.hotelName, ...item }));
+    toast.warn("Removed from cart");
+  };
+
+  const handleCheckoutCart = () => {
+    navigate("/checkout");
+    toggleDrawer();
+  };
+
   return (
     <div>
       <button
@@ -47,7 +64,10 @@ const CartDrawer = ({ isOpen, setIsOpen, toggleDrawer }: CartDrawerProps) => {
           <div className="mt-6 flex flex-col justify-between h-[90%]">
             <div>
               {cart?.map((item: any) => (
-                <div key={item.id} className="flex items-center gap-2 mb-8">
+                <div
+                  key={item.id}
+                  className="relative flex items-center gap-2 mb-8"
+                >
                   <Image
                     src={item?.roomPhotoUrl}
                     alt="hotel image"
@@ -66,10 +86,21 @@ const CartDrawer = ({ isOpen, setIsOpen, toggleDrawer }: CartDrawerProps) => {
                     </span>
                     <span className="text-gray-400">Per night</span>
                   </div>
+                  <button
+                    onClick={() => handleRemoveItem(item)}
+                    className="absolute top-0 right-0 p-2 rounded-full bg-gray-200 dark:bg-[#ffffff19] hover:bg-default-300 dark:hover:bg-default-400 duration-250"
+                  >
+                    <AiOutlineClose size={10} />
+                  </button>
                 </div>
               ))}
             </div>
-            <Button variant="flat" className="bg-blue-600 text-xl text-white">
+            <Button
+              onClick={handleCheckoutCart}
+              color="primary"
+              variant="flat"
+              className="bg-blue-600 text-xl text-white"
+            >
               Checkout -{" "}
               {cart?.reduce(
                 (acc: any, item: any) =>

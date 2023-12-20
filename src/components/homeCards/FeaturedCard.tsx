@@ -80,7 +80,7 @@ const FeaturedCard = ({ hotel }: HotelProps) => {
               color="primary"
               as={Link}
               to={`/hotel/${Date.now()}`}
-              className="text-white text-base"
+              className="dark:text-white text-base"
             >
               See more details...
             </Button>
