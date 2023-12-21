@@ -4,6 +4,7 @@ import { recentlyVisitedHotel } from "../../@types/hotel";
 import Loading from "../../components/Loading";
 import Carousel from "react-multi-carousel";
 import RecentlyVisitedCard from ".././homeCards/RecentlyVisitedCard";
+import { Link } from "react-router-dom";
 
 interface recentlyVisitedCardContainerProps {
   hotelsRecentlyVisited: recentlyVisitedHotel[];
@@ -32,13 +33,16 @@ const RecentlyVisitedCardContainer = ({
             removeArrowOnDeviceType={["tablet", "mobile"]}
             dotListClass="custom-dot-list-style"
             itemClass="carousel-item-padding-40-px flex justify-center pb-12"
+            className="z-0"
           >
             {hotelsRecentlyVisited && hotelsRecentlyVisited.length > 0 ? (
               hotelsRecentlyVisited.map((hotel: recentlyVisitedHotel) => (
-                <RecentlyVisitedCard key={hotel.cityName} hotel={hotel} />
+                <Link to={`/hotel/${Date.now()}`} key={hotel.cityName}>
+                  <RecentlyVisitedCard hotel={hotel} />
+                </Link>
               ))
             ) : (
-              <p>No trending hotels available.</p>
+              <p>No hotels available.</p>
             )}
           </Carousel>
         </div>

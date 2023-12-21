@@ -4,6 +4,7 @@ import { trendingHotel } from "../../@types/hotel";
 import Loading from "../../components/Loading";
 import Carousel from "react-multi-carousel";
 import TrendingCard from ".././homeCards/TrendingCard";
+import { Link } from "react-router-dom";
 
 interface trendingCardContainerProps {
   trendingHotels: trendingHotel[];
@@ -32,10 +33,13 @@ const TrendingCardContainer = ({
             removeArrowOnDeviceType={["tablet", "mobile"]}
             dotListClass="custom-dot-list-style"
             itemClass="carousel-item-padding-40-px flex justify-center pb-12"
+            className="z-0"
           >
             {trendingHotels && trendingHotels.length > 0 ? (
               trendingHotels.map((hotel: trendingHotel) => (
-                <TrendingCard key={hotel.cityName} hotel={hotel} />
+                <Link to={`/hotel/${Date.now()}`} key={hotel.cityName}>
+                  <TrendingCard hotel={hotel} />
+                </Link>
               ))
             ) : (
               <p>No trending hotels available.</p>
