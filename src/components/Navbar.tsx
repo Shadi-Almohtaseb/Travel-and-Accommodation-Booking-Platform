@@ -25,7 +25,8 @@ import { AppDispatch, RootState } from "../redux/store";
 import { CgLogOut, CgProfile } from "react-icons/cg";
 import { styles } from "../assets/styles/navStyle";
 import { toast } from "react-toastify";
-import { SearchParams, searchForHotels } from "../redux/thunks/searchBarThunk";
+import { searchForHotels } from "../redux/thunks/searchBarThunk";
+import CartDrawer from "./CartDrawer";
 
 const menuItems = [
   "Profile",
@@ -59,6 +60,12 @@ const Navbar = () => {
     }
   }, [searchParam, dispatch]);
 
+  // drawer
+  const [isOpen, setIsOpen] = React.useState(false);
+  const toggleDrawer = () => {
+    setIsOpen((prevState) => !prevState);
+  };
+
   return (
     <NavbarComponent
       disableAnimation
@@ -77,7 +84,7 @@ const Navbar = () => {
             <NavbarItem isActive>
               <Link
                 className="text-black dark:text-white text-lg font-semibold"
-                href="#"
+                href="/"
               >
                 Home
               </Link>
@@ -85,15 +92,15 @@ const Navbar = () => {
             <NavbarItem>
               <Link
                 className="text-black dark:text-white text-lg font-semibold"
-                href="#"
+                href="/search-results"
               >
-                Rooms
+                Hotels
               </Link>
             </NavbarItem>
             <NavbarItem>
               <Link
                 className="text-black dark:text-white text-lg font-semibold"
-                href="#"
+                href="#getting-started"
               >
                 Features
               </Link>
@@ -103,7 +110,7 @@ const Navbar = () => {
                 className="text-black dark:text-white text-lg font-semibold"
                 href="#"
               >
-                Hotels
+                Rooms
               </Link>
             </NavbarItem>
           </NavbarContent>
@@ -122,7 +129,7 @@ const Navbar = () => {
                 <FaSearch className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
               }
             />
-            {searchedHotels && searchedHotels.length > 0 && (
+            {searchedHotels && searchParam && searchedHotels.length > 0 && (
               <div className="absolute top-16 bg-default-100 p-2 rounded-xl w-full">
                 {searchedHotels.map((hotel: any) => {
                   const concatenatedValue = (
@@ -167,6 +174,11 @@ const Navbar = () => {
         </div>
       ) : null}
       <NavbarContent justify="end">
+        <CartDrawer
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          toggleDrawer={toggleDrawer}
+        />
         <ThemeToggle currentMode={currentMode} toggleTheme={toggleTheme} />
         {User ? (
           <Dropdown>

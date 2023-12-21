@@ -108,6 +108,7 @@ const Home = () => {
           </div>
         </article>
       </main>
+
       <GettingStarted
         featuredHotels={featuredHotels}
         trendingHotels={trendingHotels}

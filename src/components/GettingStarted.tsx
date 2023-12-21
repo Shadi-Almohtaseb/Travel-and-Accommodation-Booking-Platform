@@ -22,6 +22,7 @@ import { City } from "../redux/slices/citySlice";
 import { getAllCitiesThunk } from "../redux/thunks/cityThunk";
 import { toast } from "react-toastify";
 import { searchForHotels } from "../redux/thunks/searchBarThunk";
+import { useNavigate } from "react-router-dom";
 
 interface gettingStartedProps {
   featuredHotels: Hotel[];
@@ -37,10 +38,15 @@ const GettingStarted = ({
   loading,
 }: gettingStartedProps) => {
   const { controls, ref } = useAnimationInView();
-  const [adults, setAdults] = React.useState<number>(0);
+  const [adults, setAdults] = React.useState<number>(2);
   const [children, setChildren] = React.useState<number>(0);
-  const [checkInDate, setCheckInDate] = React.useState<string>("");
-  const [checkOutDate, setCheckOutDate] = React.useState<string>("");
+  const [rooms, setRooms] = React.useState<number>(1);
+  const [checkInDate, setCheckInDate] = React.useState<string>(
+    new Date().toISOString().split("T")[0]
+  );
+  const [checkOutDate, setCheckOutDate] = React.useState<string>(
+    new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split("T")[0]
+  );
   const [city, setCity] = React.useState<string>("");
 
   const dispatch = useDispatch<AppDispatch>();
@@ -59,12 +65,16 @@ const GettingStarted = ({
     fetchCities();
   }, [dispatch]);
 
+  const navigate = useNavigate();
+
   const handleSearch = async () => {
     try {
-      const res = await dispatch(
+      await dispatch(
         searchForHotels({ city, checkInDate, checkOutDate, adults, children })
       ).unwrap();
-      console.log("res", res);
+      if (city) {
+        navigate("/search-results");
+      }
     } catch (error) {
       toast.error("Can't get, something went wrong");
     }
@@ -126,11 +136,16 @@ const GettingStarted = ({
           <div className="flex items-center lg:flex-row flex-col gap-10 w-full">
             <div className="flex items-center gap-3">
               <MdFamilyRestroom size={35} />
-              <ChildrenModal setAdults={setAdults} setChildren={setChildren} />
+              <ChildrenModal
+                setAdults={setAdults}
+                setChildren={setChildren}
+                setRooms={setRooms}
+              />
             </div>
-            <div className="flex items-center flex-col gap-2">
+            <div className="flex items-center flex-col gap-1">
               <span>Adults: {adults}</span>
               <span>Children: {children}</span>
+              <span>Rooms: {rooms}</span>
             </div>
             <Button color="primary" variant="shadow" onClick={handleSearch}>
               Search
