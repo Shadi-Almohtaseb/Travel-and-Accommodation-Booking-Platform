@@ -103,7 +103,8 @@ const CartDrawer = ({ isOpen, setIsOpen, toggleDrawer }: CartDrawerProps) => {
               onClick={handleCheckoutCart}
               color="primary"
               variant="flat"
-              className="bg-blue-600 text-xl text-white"
+              disabled={cart?.length === 0}
+              className="bg-blue-600 text-xl text-white disabled:bg-gray-400 disabled:text-gray-700"
             >
               Checkout -{" "}
               {cart?.reduce(
