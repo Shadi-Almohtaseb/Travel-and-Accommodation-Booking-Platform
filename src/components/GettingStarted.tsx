@@ -161,10 +161,12 @@ const GettingStarted = ({
         trendingHotels={trendingHotels}
         loading={loading}
       />
-      <RecentlyVisitedCardContainer
-        hotelsRecentlyVisited={hotelsRecentlyVisited}
-        loading={loading}
-      />
+      {hotelsRecentlyVisited && hotelsRecentlyVisited.length > 0 && (
+        <RecentlyVisitedCardContainer
+          hotelsRecentlyVisited={hotelsRecentlyVisited}
+          loading={loading}
+        />
+      )}
     </section>
   );
 };
