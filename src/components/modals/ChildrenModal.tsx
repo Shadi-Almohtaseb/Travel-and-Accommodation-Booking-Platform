@@ -12,13 +12,19 @@ import {
 } from "@nextui-org/react";
 import { FaPeopleArrows } from "react-icons/fa";
 import { MdChildFriendly } from "react-icons/md";
+import { IoBed } from "react-icons/io5";
 
 interface AppProps {
   setAdults: React.Dispatch<React.SetStateAction<number>>;
   setChildren: React.Dispatch<React.SetStateAction<number>>;
+  setRooms: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function ChildrenModal({ setAdults, setChildren }: AppProps) {
+export default function ChildrenModal({
+  setAdults,
+  setChildren,
+  setRooms,
+}: AppProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
@@ -54,6 +60,16 @@ export default function ChildrenModal({ setAdults, setChildren }: AppProps) {
                   type="number"
                   variant="bordered"
                   onChange={(e) => setChildren(parseInt(e.target.value))}
+                />
+                <Input
+                  endContent={
+                    <IoBed className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                  }
+                  label="Rooms"
+                  placeholder="how many Rooms..."
+                  type="number"
+                  variant="bordered"
+                  onChange={(e) => setRooms(parseInt(e.target.value))}
                 />
                 <div className="flex py-2 px-1 justify-between">
                   <Checkbox

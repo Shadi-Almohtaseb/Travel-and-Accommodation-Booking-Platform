@@ -1,17 +1,34 @@
-import { Accordion, AccordionItem, Image } from "@nextui-org/react";
+import { Accordion, AccordionItem, Button, Image } from "@nextui-org/react";
 import React from "react";
 import image1 from "../../assets/images/wallpaperflare.com_wallpaper (1).jpg";
 import { FaPeopleArrows } from "react-icons/fa";
 import { MdChildFriendly } from "react-icons/md";
 import { IoBed } from "react-icons/io5";
 import { HotelAmenity } from "../../pages/HotelPage";
-import { Room } from "../../@types/hotel";
+import { Hotel, Room } from "../../@types/hotel";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import { addItem, removeItem } from "../../redux/slices/cartSlice";
+import { toast } from "react-toastify";
 
 interface RoomProps {
   room: Room | null;
 }
 
 const Rooms = ({ room }: RoomProps) => {
+  const { cart } = useSelector((state: RootState) => state.cart);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleAddToCart = (room: any) => {
+    const item = cart.find((item: any) => item.id === room.roomType);
+    if (!item) {
+      dispatch(addItem({ id: room.roomType, ...room }));
+      toast.success("Added to cart");
+    } else {
+      dispatch(removeItem({ id: room.roomType, ...room }));
+      toast.warn("Removed from cart");
+    }
+  };
   return (
     <div className="flex flex-col gap-4 bg-default-200 p-3 py-5 rounded-lg">
       <div className="flex md:flex-row flex-col gap-4">
@@ -65,11 +82,20 @@ const Rooms = ({ room }: RoomProps) => {
             <span className="font-bold">{room?.capacityOfChildren}</span>
           </div>
         </div>
-        <div className="flex items-center mt-2">
+        <div className="flex items-center justify-between mt-2">
           <p className="text-xl">
             Price:{" "}
             <span className="text-green-500 font-semibold">{room?.price}$</span>
           </p>
+          <Button
+            variant="flat"
+            onClick={() => handleAddToCart(room)}
+            className="text-white text-base bg-blue-500"
+          >
+            {cart.find((item: any) => item.id === room?.roomType)
+              ? "Remove from cart"
+              : "Add to cart"}
+          </Button>
         </div>
       </div>
     </div>

@@ -1,6 +1,13 @@
 import React from "react";
 import { HotelImage } from "../../@types/hotel";
-import { Image } from "@nextui-org/react";
+import {
+  Button,
+  Image,
+  Modal,
+  ModalBody,
+  ModalContent,
+  useDisclosure,
+} from "@nextui-org/react";
 import Carousel from "react-multi-carousel";
 import Loading from "../../components/Loading";
 import { motion } from "framer-motion";
@@ -13,6 +20,8 @@ interface HotelImagesProps {
 
 const HotelImages = ({ hotelImages, loading }: HotelImagesProps) => {
   const { controls, ref } = useAnimationInView();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [selectedImage, setSelectedImage] = React.useState<string | null>(null);
 
   return (
     <div>
@@ -45,18 +54,46 @@ const HotelImages = ({ hotelImages, loading }: HotelImagesProps) => {
             >
               {hotelImages && hotelImages?.length > 0 ? (
                 hotelImages?.map((image: HotelImage) => (
-                  <div key={image.id} className="flex items-center gap-10 px-2">
-                    <Image
-                      src={image.url}
-                      alt="hotel image"
-                      className="mb-5 max-h-[350px] w-full rounded-xl"
-                    />
-                  </div>
+                  <Button
+                    key={image.id}
+                    onPress={() => {
+                      setSelectedImage(image.url);
+                      onOpen();
+                    }}
+                    className="h-full w-full mx-1"
+                  >
+                    <div className="flex items-center gap-10 px-2">
+                      <Image
+                        src={image.url}
+                        alt="hotel image"
+                        className="mb-5 max-h-[350px] w-full rounded-xl hover:transform hover:scale-105 duration-500 shadow-2xl"
+                      />
+                    </div>
+                  </Button>
                 ))
               ) : (
                 <Loading />
               )}
             </Carousel>
+            <Modal
+              isOpen={isOpen}
+              onOpenChange={onOpenChange}
+              placement="center"
+              size="5xl"
+              backdrop="blur"
+            >
+              <ModalContent>
+                {(onClose) => (
+                  <ModalBody className="p-9">
+                    <Image
+                      src={selectedImage || ""}
+                      alt="hotel image"
+                      className="rounded-xl"
+                    />
+                  </ModalBody>
+                )}
+              </ModalContent>
+            </Modal>
           </div>
         </motion.div>
       )}

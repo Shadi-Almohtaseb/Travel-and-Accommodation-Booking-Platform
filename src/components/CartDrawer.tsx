@@ -76,13 +76,17 @@ const CartDrawer = ({ isOpen, setIsOpen, toggleDrawer }: CartDrawerProps) => {
                   />
                   <div className="flex flex-col">
                     <span className="text-lg">
-                      {item?.title || item?.cityName}
+                      {item?.title || item?.cityName || item.roomType}
                     </span>
-                    <span className="text-gray-400">{item?.hotelName}</span>
+                    <span className="text-gray-400">
+                      {item?.hotelName ||
+                        (item?.roomNumber &&
+                          `Room Number: ${item?.roomNumber}`)}
+                    </span>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-lg">
-                      {item?.finalPrice || item?.roomPrice}$
+                      {item?.finalPrice || item?.roomPrice || item.price}$
                     </span>
                     <span className="text-gray-400">Per night</span>
                   </div>
@@ -104,7 +108,7 @@ const CartDrawer = ({ isOpen, setIsOpen, toggleDrawer }: CartDrawerProps) => {
               Checkout -{" "}
               {cart?.reduce(
                 (acc: any, item: any) =>
-                  acc + (item?.finalPrice || item?.roomPrice),
+                  acc + (item?.finalPrice || item?.roomPrice || item.price),
                 0
               )}
               $

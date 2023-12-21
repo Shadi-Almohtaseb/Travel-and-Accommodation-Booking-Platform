@@ -5,6 +5,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { removeItem } from "../redux/slices/cartSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { reset } from "../redux/slices/cartSlice";
 
 const Checkout = () => {
   const { cart } = useSelector((state: RootState) => state.cart);
@@ -18,6 +19,7 @@ const Checkout = () => {
   };
 
   const handleCheckout = () => {
+    dispatch(reset());
     toast.success("Checkout successful");
     navigate("/payment-successful");
   };
@@ -369,7 +371,7 @@ const Checkout = () => {
               <p className="text-2xl font-semibold text-gray-900 dark:text-white">
                 {cart?.reduce(
                   (acc: any, item: any) =>
-                    acc + (item?.finalPrice || item?.roomPrice),
+                    acc + (item?.finalPrice || item?.roomPrice || item.price),
                   0
                 )}
                 $
