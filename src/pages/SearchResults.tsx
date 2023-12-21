@@ -16,7 +16,7 @@ const SearchResults = () => {
   const roomTypeList = searchResults?.map((item) => item.roomType) || [];
 
   const [sortOption, setSortOption] = useState<string>("");
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 200]);
   const [starRating, setStarRating] = useState<number | undefined>(undefined);
   const [roomType, setRoomType] = useState<string | undefined>(undefined);
 
@@ -81,7 +81,7 @@ const SearchResults = () => {
           </label>
           <Slider
             step={50}
-            maxValue={1000}
+            maxValue={200}
             minValue={0}
             value={priceRange}
             onChange={(value) =>
@@ -140,7 +140,7 @@ const SearchResults = () => {
             color="primary"
             className="w-full"
             onClick={() => {
-              setPriceRange([0, 1000]);
+              setPriceRange([0, 200]);
               setStarRating(undefined);
               setRoomType(undefined);
             }}

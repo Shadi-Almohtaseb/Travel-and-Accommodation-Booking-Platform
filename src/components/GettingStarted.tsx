@@ -95,7 +95,7 @@ const GettingStarted = ({
         <div className="flex md:flex-row flex-col items-center gap-14 lg:mx-16 rounded-lg bg-slate-100 shadow-2xl dark:bg-slate-800 py-7 px-5 mt-16">
           <div className="flex items-center gap-3  lg:w-[60%] w-full">
             <GrLocation size={35} />
-            <Autocomplete label="Select a city" className="max-w-xs">
+            <Autocomplete label="Location" className="max-w-xs">
               {(cities as City[]).map((city: City) => (
                 <AutocompleteItem
                   key={city.id}
