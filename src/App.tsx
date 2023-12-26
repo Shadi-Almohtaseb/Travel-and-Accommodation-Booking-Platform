@@ -9,7 +9,7 @@ import { ToastContainer } from "react-toastify";
 import { PrivateAdminRoute, PrivateUserRoute } from "./utils/PrivateRoute";
 import SearchResults from "./pages/SearchResults";
 import HotelPage from "./pages/HotelPage";
-import AdminDashboard from "./pages/AdminDashboard";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import Checkout from "./pages/Checkout";
 import PaymentSuccessful from "./pages/PaymentSuccessful";
 
