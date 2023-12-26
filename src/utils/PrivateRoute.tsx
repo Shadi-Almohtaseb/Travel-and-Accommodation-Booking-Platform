@@ -15,7 +15,7 @@ export const PrivateUserRoute = ({ children }: PrivateRouteProps) => {
     return <Navigate to="/login" />;
   }
 
-  return children;
+  return <React.Fragment>{children}</React.Fragment>;
 };
 
 export const PrivateAdminRoute = ({ children }: PrivateRouteProps) => {
@@ -25,5 +25,5 @@ export const PrivateAdminRoute = ({ children }: PrivateRouteProps) => {
     return <Navigate to="/login" />;
   }
 
-  return children;
+  return <React.Fragment>{children}</React.Fragment>;
 };
